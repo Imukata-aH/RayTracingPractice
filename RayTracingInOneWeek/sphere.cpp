@@ -1,4 +1,5 @@
 #include "sphere.h"
+#include "ray.h"
 
 bool Sphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) const
 {
@@ -21,6 +22,7 @@ bool Sphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) const
 			rec.t = hitPointParam;
 			rec.hitPoint = r.point_at_parameter(hitPointParam);
 			rec.normal = (rec.hitPoint - center) / radius;
+			rec.material = mat;
 			return true;
 		}
 
@@ -30,6 +32,7 @@ bool Sphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) const
 			rec.t = hitPointParam;
 			rec.hitPoint = r.point_at_parameter(hitPointParam);
 			rec.normal = (rec.hitPoint - center) / radius;
+			rec.material = mat;
 			return true;
 		}
 	}

@@ -2,11 +2,12 @@
 
 #include "hitable.h"
 
+
 class Sphere : public Hitable
 {
 public:
 	Sphere(){}
-	Sphere(vec3 center, float radius) : center(center), radius(radius) {};
+	Sphere(vec3 center, float radius, material* material) : Hitable(material), center(center), radius(radius){};
 
 	virtual bool hit(const ray& r, float tMin, float tMax, HitRecord& rec) const;
 

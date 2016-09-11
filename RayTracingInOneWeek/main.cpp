@@ -6,12 +6,15 @@
 #include "float.h"
 #include "hitable_list.h"
 #include "camera.h"
+#include "material.h"
+#include "lambertian.h"
+#include "metal.h"
 
 
 namespace
 {
-	std::random_device rnd;
-	std::mt19937 mt{ rnd() };
+	std::random_device m_rnd;
+	std::mt19937 mt{ m_rnd() };
 	std::uniform_real_distribution<float> dist{ 0, 1 };
 
 	const float gamma{ 2.2f };
@@ -29,15 +32,22 @@ vec3 randomInUnitSphere()
 	return p;
 }
 
-vec3 colorizeFromRay(const ray& r, const Hitable& world)
+vec3 colorizeFromRay(const ray& r, const Hitable& world, int depth)
 {
 	HitRecord rec{};
-	if (world.hit(r, 0.0001f, FLT_MAX, rec))
+	if (world.hit(r, 0.001f, FLT_MAX, rec))
 	{
-		// 接触点に接する単位球球面内のランダムな点を、反射方向とする
-		vec3 randomTarget = rec.hitPoint + rec.normal + randomInUnitSphere();
-		// 再帰的に反射を計算（反射のたびに色の50%を吸収する）
-		return 0.5 * colorizeFromRay(ray{ rec.hitPoint, randomTarget - rec.hitPoint }, world);
+		ray scattered;
+		vec3 attenuation;
+		if (depth < 50 && rec.material->scatter(r, rec, attenuation, scattered))
+		{
+			// 再帰的に反射を計算
+			return attenuation * colorizeFromRay(scattered, world, depth + 1);
+		}
+		else
+		{
+			return vec3{ 0, 0, 0 };
+		}
 	}
 	else
 	{
@@ -55,16 +65,16 @@ int main(int argc, char** argv)
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDRにも対応できるようJXRで保存したい
 
-	int nx = 200;
-	int ny = 100;
+	int nx{ 200 };
+	int ny{ 100 };
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
 	Camera camera{};
 
 	std::vector<Hitable*> sphereList{2};
-	sphereList[0] = { new Sphere{ vec3{ 0.0f, 0.0f, -1.0f }, 0.5f } };
-	sphereList[1] = { new Sphere{ vec3{ 0.0f, -100.5f, -1.0f }, 100.0f } };
+	sphereList[0] = { new Sphere{ vec3{ 0.0f, 0.0f, -1.0f }, 0.5f, new Lambertian(vec3{0.8f, 0.3f, 0.3f})} };
+	sphereList[1] = { new Sphere{ vec3{ 0.0f, -100.5f, -1.0f }, 100.0f, new Lambertian(vec3{ 0.8f, 0.8f, 0.0f }) } };
 	Hitable* world = new HitableList{ &sphereList };
 
 	const float inv_gamma{ 1 / gamma };
@@ -79,7 +89,7 @@ int main(int argc, char** argv)
 				float u = float(i + dist(mt)) / float(nx);
 				float v = float(j + dist(mt)) / float(ny);
 				ray r{ camera.getRay(u, v) };
-				color += colorizeFromRay(r, *world);
+				color += colorizeFromRay(r, *world, 0);
 			}
 			color /= float(ns);
 
