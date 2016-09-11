@@ -20,18 +20,6 @@ namespace
 	const float gamma{ 2.2f };
 }
 
-// ランダムな反射方向を決定するため、rejection sampling（モンテカルロ法）を用いてランダムな点を決定する
-// xyzそれぞれが[-1, 1]となる立方体からランダムに点を選び、原点からのその点へのベクトルの長さが1以上となる点を受け入れる。
-vec3 randomInUnitSphere()
-{
-	vec3 p{};
-	do
-	{
-		p = 2.0*vec3{ dist(mt), dist(mt), dist(mt) } -vec3{ 1.0f, 1.0f, 1.0f };
-	} while (p.squared_length() >= 1.0f);
-	return p;
-}
-
 vec3 colorizeFromRay(const ray& r, const Hitable& world, int depth)
 {
 	HitRecord rec{};
@@ -39,7 +27,7 @@ vec3 colorizeFromRay(const ray& r, const Hitable& world, int depth)
 	{
 		ray scattered;
 		vec3 attenuation;
-		if (depth < 50 && rec.material->scatter(r, rec, attenuation, scattered))
+		if (depth < 50 && rec.material->scatter(r, rec, attenuation, scattered))	// 反射回数は50回までに制限
 		{
 			// 再帰的に反射を計算
 			return attenuation * colorizeFromRay(scattered, world, depth + 1);
@@ -72,9 +60,11 @@ int main(int argc, char** argv)
 
 	Camera camera{};
 
-	std::vector<Hitable*> sphereList{2};
+	std::vector<Hitable*> sphereList{4};
 	sphereList[0] = { new Sphere{ vec3{ 0.0f, 0.0f, -1.0f }, 0.5f, new Lambertian(vec3{0.8f, 0.3f, 0.3f})} };
 	sphereList[1] = { new Sphere{ vec3{ 0.0f, -100.5f, -1.0f }, 100.0f, new Lambertian(vec3{ 0.8f, 0.8f, 0.0f }) } };
+	sphereList[2] = { new Sphere{ vec3{ 1.0f, 0.0f, -1.0f }, 0.5f, new Metal(vec3{ 0.8f, 0.6f, 0.2f }) } };
+	sphereList[3] = { new Sphere{ vec3{ -1.0f, 0.0f, -1.0f }, 0.5f, new Metal(vec3{ 0.8f, 0.8f, 0.8f }) } };
 	Hitable* world = new HitableList{ &sphereList };
 
 	const float inv_gamma{ 1 / gamma };
