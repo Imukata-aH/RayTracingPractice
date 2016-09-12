@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dielectric.cpp" />
     <ClCompile Include="hitable_list.cpp" />
     <ClCompile Include="labertian.cpp" />
     <ClCompile Include="main.cpp" />
@@ -155,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="dielectric.h" />
     <ClInclude Include="hitable.h" />
     <ClInclude Include="hitable_list.h" />
     <ClInclude Include="lambertian.h" />
