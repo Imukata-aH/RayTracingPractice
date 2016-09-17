@@ -15,7 +15,8 @@ protected:
 		return v - 2 * dot(v, n) * n;
 	}
 
-	bool refract(const vec3& v, const vec3& n, float ni, float nt, vec3& refracted) const	// ni: N“üŒ³‹üÜ—¦ nt: N“üæ‹üÜ—¦
+	// ni: “üËŒ³‹üÜ—¦ nt: “üËæ‹üÜ—¦
+	bool refract(const vec3& v, const vec3& n, float ni, float nt, vec3& refracted) const
 	{
 		float niOverNt{ ni / nt };
 		vec3 uv{ unit_vector(v) };

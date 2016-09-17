@@ -9,7 +9,7 @@
 #include "material.h"
 #include "lambertian.h"
 #include "metal.h"
-
+#include "dielectric.h"
 
 namespace
 {
@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 	sphereList[0] = { new Sphere{ vec3{ 0.0f, 0.0f, -1.0f }, 0.5f, new Lambertian(vec3{0.8f, 0.3f, 0.3f})} };
 	sphereList[1] = { new Sphere{ vec3{ 0.0f, -100.5f, -1.0f }, 100.0f, new Lambertian(vec3{ 0.8f, 0.8f, 0.0f }) } };
 	sphereList[2] = { new Sphere{ vec3{ 1.0f, 0.0f, -1.0f }, 0.5f, new Metal(vec3{ 0.8f, 0.6f, 0.2f }, 0.3f) } };
-	sphereList[3] = { new Sphere{ vec3{ -1.0f, 0.0f, -1.0f }, 0.5f, new Metal(vec3{ 0.8f, 0.8f, 0.8f }, 1.0f) } };
+	sphereList[3] = { new Sphere{ vec3{ -1.0f, 0.0f, -1.0f }, 0.5f, new Dielectric(1.5f) } };
 	Hitable* world = new HitableList{ &sphereList };
 
 	const float inv_gamma{ 1 / gamma };
