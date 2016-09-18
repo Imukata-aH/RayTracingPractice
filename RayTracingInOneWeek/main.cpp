@@ -58,7 +58,11 @@ int main(int argc, char** argv)
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
-	Camera camera{ vec3{-2.0f, 2.0f, 1.0f}, vec3{0.0f, 0.0f, -1.0f}, vec3{0.0f, 1.0f, 0.0f}, 30.0f, float(nx) / float(ny) };
+	vec3 lookFrom{ 3.0f, 3.0f, 2.0f };
+	vec3 lookAt{ 0.0f, 0.0f, -1.0f };
+	float distToFocus = (lookFrom - lookAt).length();
+	float aperture = 1.3f;
+	Camera camera{ lookFrom, lookAt, vec3{0.0f, 1.0f, 0.0f}, 30.0f, float(nx) / float(ny), aperture, distToFocus };
 
 	std::vector<Hitable*> sphereList{};
 	sphereList.push_back({ new Sphere{ vec3{ 0.0f, 0.0f, -1.0f }, 0.5f, new Lambertian(vec3{0.8f, 0.3f, 0.3f})} });
