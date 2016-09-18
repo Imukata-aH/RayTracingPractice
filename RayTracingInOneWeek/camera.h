@@ -21,6 +21,17 @@ public:
 	{
 	}
 
+	Camera(float vfov, float aspect)
+	{
+		float theta{ vfov * (float)(M_PI / 180.0) };
+		float halfHeight { tan(theta / 2) };
+		float halfWidth{ aspect * halfHeight };
+		lowerLeftCorner = vec3{ -halfWidth, -halfHeight, -1.0f };
+		horizontal = vec3{ 2 * halfWidth, 0.0f, 0.0f };
+		vertical = vec3{ 0.0, 2 * halfHeight,0.0f };
+		origin = vec3{ 0.0f, 0.0f, 0.0f };
+	}
+
 	const ray getRay(const float u, const float v) { return ray{ origin, lowerLeftCorner + u * horizontal + v * vertical - origin }; }
 
 	//TODO: getter, setter
