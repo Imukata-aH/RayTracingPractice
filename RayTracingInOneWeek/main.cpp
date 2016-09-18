@@ -20,6 +20,57 @@ namespace
 	const float gamma{ 2.2f };
 }
 
+Hitable* makeRandomSphereScene()
+{
+	int sphereNum = 500;
+	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
+	(*list).push_back(new Sphere{ vec3{0.0f, -1000.0f, 0.0f}, 1000.0f, new Lambertian{vec3{0.5f, 0.5f, 0.5f}} });	// ground
+	int i = 1;
+	for (int a = -11; a < 11; a++)
+	{
+		for (int b = -11; b < 11; b++)
+		{
+			float chooseMat{ RandomUtil::getRandom0to1() };
+			vec3 center{ a + 0.9f * RandomUtil::getRandom0to1(), 0.2f, b + 0.9f*RandomUtil::getRandom0to1() };
+			if ((center - vec3{ 4.0f, 0.2f, 0.0f }).length() > 0.9f)
+			{
+				if (chooseMat < 0.8f)
+				{
+					// diffuse
+					(*list).push_back(new Sphere{ 
+						center, 
+						0.2f, 
+						new Lambertian{vec3{RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1()}} 
+					});
+				}
+				else if (chooseMat < 0.95f)
+				{
+					// metal
+					(*list).push_back(new Sphere{
+						center,
+						0.2f,
+						new Metal{
+							vec3{0.5f * (1.0f + RandomUtil::getRandom0to1()), 0.5f * (1.0f + RandomUtil::getRandom0to1()), 0.5f * (1.0f + RandomUtil::getRandom0to1())},
+							0.5f * RandomUtil::getRandom0to1()
+						}
+					});
+				}
+				else
+				{
+					// glass
+					(*list).push_back(new Sphere{ center, 0.2f, new Dielectric{1.5f} });
+				}
+			}
+		}
+	}
+
+	(*list).push_back(new Sphere{ vec3{0.0f, 1.0f, 0.0f}, 1.0f, new Dielectric{1.5f} });
+	(*list).push_back(new Sphere{ vec3{-4.0f, 1.0f, 0.0f}, 1.0f, new Lambertian{vec3{0.1f, 0.4f, 0.7f}} });
+	(*list).push_back(new Sphere{ vec3{4.0f, 1.0f, 0.0f}, 1.0f, new Metal{vec3{0.7f, 0.6f, 0.5f}, 0.0f} });
+
+	return new HitableList{ list };
+}
+
 vec3 colorizeFromRay(const ray& r, const Hitable& world, int depth)
 {
 	HitRecord rec{};
@@ -58,19 +109,20 @@ int main(int argc, char** argv)
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
-	vec3 lookFrom{ 3.0f, 3.0f, 2.0f };
-	vec3 lookAt{ 0.0f, 0.0f, -1.0f };
+	vec3 lookFrom{ 15.0f, 2.5f, 6.0f };
+	vec3 lookAt{ 0.0f, 0.5f, 0.0f };
 	float distToFocus = (lookFrom - lookAt).length();
-	float aperture = 1.3f;
-	Camera camera{ lookFrom, lookAt, vec3{0.0f, 1.0f, 0.0f}, 30.0f, float(nx) / float(ny), aperture, distToFocus };
+	float aperture = 0.1f;
+	Camera camera{ lookFrom, lookAt, vec3{0.0f, 1.0f, 0.0f}, 20.0f, float(nx) / float(ny), aperture, distToFocus };
 
-	std::vector<Hitable*> sphereList{};
+	/*std::vector<Hitable*> sphereList{};
 	sphereList.push_back({ new Sphere{ vec3{ 0.0f, 0.0f, -1.0f }, 0.5f, new Lambertian(vec3{0.8f, 0.3f, 0.3f})} });
 	sphereList.push_back({ new Sphere{ vec3{ 0.0f, -100.5f, -1.0f }, 100.0f, new Lambertian(vec3{ 0.8f, 0.8f, 0.0f }) } });
 	sphereList.push_back({ new Sphere{ vec3{ 1.0f, 0.0f, -1.0f }, 0.5f, new Metal(vec3{ 0.8f, 0.6f, 0.2f }, 0.3f) } });
 	sphereList.push_back({ new Sphere{ vec3{ -1.0f, 0.0f, -1.0f }, 0.5f, new Dielectric(1.5f) } });
 	sphereList.push_back({ new Sphere{ vec3{ -1.0f, 0.0f, -1.0f }, -0.45f, new Dielectric(1.5f) } });
-	Hitable* world = new HitableList{ &sphereList };
+	Hitable* world = new HitableList{ &sphereList };*/
+	Hitable* world = makeRandomSphereScene();
 
 	const float inv_gamma{ 1 / gamma };
 	for (int j = ny - 1; j >= 0; j--)

@@ -15,6 +15,7 @@ public:
 	size_t getListSize()const { return list->size(); }
 	Hitable* operator[](int i) { return (*list)[i]; }
 
+	// TODO: implement destructor to release vector's resources.
 private:
 	std::vector<Hitable*>* list;
 };
