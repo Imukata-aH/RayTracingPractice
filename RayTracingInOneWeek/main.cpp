@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <random>
+#include <chrono>
 #include "sphere.h"
 #include "float.h"
 #include "hitable_list.h"
@@ -99,13 +100,15 @@ vec3 colorizeFromRay(const ray& r, const Hitable& world, int depth)
 
 int main(int argc, char** argv)
 {
+	auto start = std::chrono::system_clock::now();
+
 	std::string fileName = argv[1];
 
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDR‚É‚à‘Î‰ž‚Å‚«‚é‚æ‚¤JXR‚Å•Û‘¶‚µ‚½‚¢
 
-	int nx{ 200 };
-	int ny{ 100 };
+	int nx{ 800 };
+	int ny{ 600 };
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -152,5 +155,10 @@ int main(int argc, char** argv)
 		}
 	}
 
+	auto end = std::chrono::system_clock::now();
+	auto duration = end - start;
+	auto sec = std::chrono::duration_cast<std::chrono::seconds>(duration).count();
+	std::cout << sec << " sec." << std::endl;
+	getchar();
 	return 0;
 }
