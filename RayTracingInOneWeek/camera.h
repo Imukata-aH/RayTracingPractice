@@ -21,15 +21,21 @@ public:
 	{
 	}
 
-	Camera(float vfov, float aspect)
+	// vfov[degree]
+	Camera(vec3 lookFrom, vec3 lookAt, vec3 vUp, float vfov, float aspect)
 	{
+		vec3 w{ unit_vector(lookFrom - lookAt) };	 //Camera is faced to -w
+		vec3 u{ unit_vector(cross(vUp, w)) };
+		vec3 v{ cross(w, u) };
+
 		float theta{ vfov * (float)(M_PI / 180.0) };
 		float halfHeight { tan(theta / 2) };
 		float halfWidth{ aspect * halfHeight };
-		lowerLeftCorner = vec3{ -halfWidth, -halfHeight, -1.0f };
-		horizontal = vec3{ 2 * halfWidth, 0.0f, 0.0f };
-		vertical = vec3{ 0.0, 2 * halfHeight,0.0f };
-		origin = vec3{ 0.0f, 0.0f, 0.0f };
+		
+		origin = lookFrom;
+		lowerLeftCorner = origin - halfWidth*u - halfHeight*v - w;
+		horizontal = 2 * halfWidth * u;
+		vertical = 2 * halfHeight * v;
 	}
 
 	const ray getRay(const float u, const float v) { return ray{ origin, lowerLeftCorner + u * horizontal + v * vertical - origin }; }

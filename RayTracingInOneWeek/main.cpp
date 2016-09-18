@@ -58,17 +58,14 @@ int main(int argc, char** argv)
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
-	Camera camera{90, float(nx) / float(ny)};
+	Camera camera{ vec3{-2.0f, 2.0f, 1.0f}, vec3{0.0f, 0.0f, -1.0f}, vec3{0.0f, 1.0f, 0.0f}, 30.0f, float(nx) / float(ny) };
 
 	std::vector<Hitable*> sphereList{};
-	float R{ float(cos(M_PI / 4)) };
-	sphereList.push_back({ new Sphere{ vec3{ -R, 0.0f, -1.0f }, R, new Lambertian(vec3{ 0.0f, 0.0f, 1.0f }) } });
-	sphereList.push_back({ new Sphere{ vec3{ R, 0.0f, -1.0f }, R, new Lambertian(vec3{ 1.0f, 0.0f, 0.0f }) } });
-	/*sphereList.push_back({ new Sphere{ vec3{ 0.0f, 0.0f, -1.0f }, 0.5f, new Lambertian(vec3{0.8f, 0.3f, 0.3f})} });
+	sphereList.push_back({ new Sphere{ vec3{ 0.0f, 0.0f, -1.0f }, 0.5f, new Lambertian(vec3{0.8f, 0.3f, 0.3f})} });
 	sphereList.push_back({ new Sphere{ vec3{ 0.0f, -100.5f, -1.0f }, 100.0f, new Lambertian(vec3{ 0.8f, 0.8f, 0.0f }) } });
 	sphereList.push_back({ new Sphere{ vec3{ 1.0f, 0.0f, -1.0f }, 0.5f, new Metal(vec3{ 0.8f, 0.6f, 0.2f }, 0.3f) } });
 	sphereList.push_back({ new Sphere{ vec3{ -1.0f, 0.0f, -1.0f }, 0.5f, new Dielectric(1.5f) } });
-	sphereList.push_back({ new Sphere{ vec3{ -1.0f, 0.0f, -1.0f }, -0.45f, new Dielectric(1.5f) } });*/
+	sphereList.push_back({ new Sphere{ vec3{ -1.0f, 0.0f, -1.0f }, -0.45f, new Dielectric(1.5f) } });
 	Hitable* world = new HitableList{ &sphereList };
 
 	const float inv_gamma{ 1 / gamma };
