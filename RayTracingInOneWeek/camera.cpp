@@ -23,10 +23,11 @@ Camera::Camera() :
 }
 
 // vfov[degree]
-Camera::Camera(vec3 lookFrom, vec3 lookAt, vec3 vUp, float vfov, float aspect, float aperture, float focusDist)
+Camera::Camera(vec3 lookFrom, vec3 lookAt, vec3 vUp, float vfov, float aspect, float aperture, float focusDist, float shutterOpen, float shutterClose) :
+	timeOpen{shutterOpen},
+	timeClose{shutterClose},
+	lensRadius{ aperture / 2.0f}
 {
-	lensRadius = aperture / 2.0f;
-
 	w = unit_vector(lookFrom - lookAt);	 //Camera is faced to -w
 	u = unit_vector(cross(vUp, w));
 	v = cross(w, u);
@@ -49,5 +50,6 @@ const ray Camera::getRay(const float s, const float t) const
 	vec3 rd = lensRadius * randomInUnitDisc();
 	vec3 offset = u * rd.x() + v * rd.y();
 	vec3 rayOriginOnLens = origin + offset;
-	return ray{ rayOriginOnLens, lowerLeftCorner + s * horizontal + t * vertical - rayOriginOnLens };
+	float time = timeOpen + RandomUtil::getRandom0to1() * (timeClose - timeOpen);
+	return ray{ rayOriginOnLens, lowerLeftCorner + s * horizontal + t * vertical - rayOriginOnLens, time };
 }

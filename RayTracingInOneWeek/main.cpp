@@ -117,7 +117,7 @@ int main(int argc, char** argv)
 	vec3 lookAt{ 0.0f, 0.5f, 0.0f };
 	float distToFocus = (lookFrom - lookAt).length();
 	float aperture = 0.1f;
-	Camera camera{ lookFrom, lookAt, vec3{0.0f, 1.0f, 0.0f}, 20.0f, float(nx) / float(ny), aperture, distToFocus };
+	Camera camera{ lookFrom, lookAt, vec3{0.0f, 1.0f, 0.0f}, 20.0f, float(nx) / float(ny), aperture, distToFocus, 0.0f, 1.0f };
 
 	/*std::vector<Hitable*> sphereList{};
 	sphereList.push_back({ new Sphere{ vec3{ 0.0f, 0.0f, -1.0f }, 0.5f, new Lambertian(vec3{0.8f, 0.3f, 0.3f})} });

@@ -7,7 +7,7 @@ class Camera
 public:
 	Camera();
 	// vfov[degree]
-	Camera(vec3 lookFrom, vec3 lookAt, vec3 vUp, float vfov, float aspect, float aperture, float focusDist);
+	Camera(vec3 lookFrom, vec3 lookAt, vec3 vUp, float vfov, float aspect, float aperture, float focusDist, float shutterOpen, float shutterClose);
 
 	const ray getRay(const float s, const float t) const;
 
@@ -18,4 +18,5 @@ private:
 	vec3 vertical;			// カメラ（ray）の目標地点となる平面の垂直方向長さ
 	vec3 u, v, w;			// Camera's corrdinate
 	float lensRadius;		// virtual lens radius in front of film plane
+	float timeOpen, timeClose; // shutter open/close time.
 };
