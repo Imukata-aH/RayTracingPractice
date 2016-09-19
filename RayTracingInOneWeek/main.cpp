@@ -11,6 +11,7 @@
 #include "lambertian.h"
 #include "metal.h"
 #include "dielectric.h"
+#include "random_util.h"
 
 namespace
 {

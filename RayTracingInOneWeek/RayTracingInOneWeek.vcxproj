@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="dielectric.cpp" />
     <ClCompile Include="hitable_list.cpp" />
     <ClCompile Include="labertian.cpp" />
