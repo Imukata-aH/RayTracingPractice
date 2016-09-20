@@ -8,7 +8,7 @@ bool Lambertian::scatter(const ray& r_in, const HitRecord& rec, vec3& attenuatio
 {
 	// 接触点に接する単位球球面内のランダムな点を、反射方向とする
 	vec3 target = rec.hitPoint + rec.normal + RandomUtil::getrRandomPointInUnitSphere();
-	scattered = ray(rec.hitPoint, target - rec.hitPoint);
+	scattered = ray(rec.hitPoint, target - rec.hitPoint, r_in.time());
 	attenuation = albedo;
 	return true;
 }

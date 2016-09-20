@@ -57,12 +57,12 @@ bool Dielectric::scatter(const ray& r_in, const HitRecord& rec, vec3& attenuatio
 	if (RandomUtil::getRandom0to1() < reflectProbability)
 	{
 		// ”½ŽË‚µ‚½
-		scattered = ray{ rec.hitPoint, reflected };
+		scattered = ray{ rec.hitPoint, reflected, r_in.time() };
 	}
 	else
 	{
 		// ‹üÜ‚µ‚½
-		scattered = ray{ rec.hitPoint, refracted };
+		scattered = ray{ rec.hitPoint, refracted, r_in.time() };
 	}
 	return true;
 }
