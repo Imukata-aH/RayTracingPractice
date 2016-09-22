@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="checker_texture.h" />
     <ClInclude Include="dielectric.h" />
     <ClInclude Include="constant_texture.h" />
     <ClInclude Include="hitable.h" />

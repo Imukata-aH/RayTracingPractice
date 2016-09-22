@@ -15,6 +15,7 @@
 #include "random_util.h"
 #include "moving_sphere.h"
 #include "constant_texture.h"
+#include "checker_texture.h"
 
 namespace
 {
@@ -63,9 +64,11 @@ Hitable* makeRandomSphereScene()
 	int sphereNum = 500;
 	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
 	(*list).push_back(new Sphere{ 
-		vec3{0.0f, -1000.0f, 0.0f}, 
-		1000.0f, 
-		new Lambertian{new ConstantTexture(vec3{0.5f, 0.5f, 0.5f})} 
+		vec3{0.0f, -2000.0f, 0.0f}, 
+		2000.0f, 
+		new Lambertian{
+			new CheckerTexture{new ConstantTexture{vec3{0.1f, 0.3f, 0.5f}}, new ConstantTexture{vec3{0.9f, 0.9f, 0.9f}}}
+		} 
 	});	// ground
 	int i = 1;
 	for (int a = -11; a < 11; a++)
@@ -137,8 +140,8 @@ int main(int argc, char** argv)
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDR‚É‚à‘Î‰ž‚Å‚«‚é‚æ‚¤JXR‚Å•Û‘¶‚µ‚½‚¢
 
-	int nx{ 200 };
-	int ny{ 100 };
+	int nx{ 800 };
+	int ny{ 600 };
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
