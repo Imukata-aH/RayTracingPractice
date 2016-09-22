@@ -3,6 +3,7 @@
 #include <string>
 #include <random>
 #include <chrono>
+
 #include "sphere.h"
 #include "float.h"
 #include "hitable_list.h"
@@ -13,6 +14,7 @@
 #include "dielectric.h"
 #include "random_util.h"
 #include "moving_sphere.h"
+#include "constant_texture.h"
 
 namespace
 {
@@ -28,7 +30,11 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 	material* mat{ nullptr };
 	if (chooseMat < 0.8f)
 	{
-		mat = new Lambertian{ vec3{ RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1() } };
+		mat = new Lambertian{ new ConstantTexture(vec3{ 
+			RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), 
+			RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), 
+			RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1() } 
+		)};
 	}
 	else if (chooseMat < 0.9f)
 	{
@@ -56,7 +62,11 @@ Hitable* makeRandomSphereScene()
 {
 	int sphereNum = 500;
 	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
-	(*list).push_back(new Sphere{ vec3{0.0f, -1000.0f, 0.0f}, 1000.0f, new Lambertian{vec3{0.5f, 0.5f, 0.5f}} });	// ground
+	(*list).push_back(new Sphere{ 
+		vec3{0.0f, -1000.0f, 0.0f}, 
+		1000.0f, 
+		new Lambertian{new ConstantTexture(vec3{0.5f, 0.5f, 0.5f})} 
+	});	// ground
 	int i = 1;
 	for (int a = -11; a < 11; a++)
 	{
@@ -73,9 +83,21 @@ Hitable* makeRandomSphereScene()
 		}
 	}
 
-	(*list).push_back(new Sphere{ vec3{0.0f, 1.0f, 0.0f}, 1.0f, new Dielectric{1.5f} });
-	(*list).push_back(new Sphere{ vec3{-4.0f, 1.0f, 0.0f}, 1.0f, new Lambertian{vec3{0.1f, 0.4f, 0.7f}} });
-	(*list).push_back(new Sphere{ vec3{4.0f, 1.0f, 0.0f}, 1.0f, new Metal{vec3{0.7f, 0.6f, 0.5f}, 0.0f} });
+	(*list).push_back(new Sphere{ 
+		vec3{0.0f, 1.0f, 0.0f}, 
+		1.0f, 
+		new Dielectric{1.5f} 
+	});
+	(*list).push_back(new Sphere{ 
+		vec3{-4.0f, 1.0f, 0.0f}, 
+		1.0f, 
+		new Lambertian{new ConstantTexture(vec3{0.1f, 0.4f, 0.7f})} 
+	});
+	(*list).push_back(new Sphere{ 
+		vec3{4.0f, 1.0f, 0.0f},
+		1.0f,
+		new Metal{vec3{0.7f, 0.6f, 0.5f}, 0.0f}
+	});
 
 	return new HitableList{ list };
 }
@@ -115,8 +137,8 @@ int main(int argc, char** argv)
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDR‚É‚à‘Î‰ž‚Å‚«‚é‚æ‚¤JXR‚Å•Û‘¶‚µ‚½‚¢
 
-	int nx{ 800 };
-	int ny{ 600 };
+	int nx{ 200 };
+	int ny{ 100 };
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 

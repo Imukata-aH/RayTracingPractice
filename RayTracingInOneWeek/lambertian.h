@@ -2,15 +2,13 @@
 
 #include "material.h"
 #include "vec3.h"
+class Texture;
 
 class Lambertian :public material
 {
 public:
-	Lambertian(const vec3& a) : albedo(a) {}
+	Lambertian(Texture* texture);
 	virtual bool scatter(const ray& r_in, const HitRecord& rec, vec3& attenuation, ray& scattered) const;
-
-	void setAlbedo(const vec3& albedo);
-	const vec3& getAlbedo()const;
 private:
-	vec3 albedo;
+	Texture* albedo;
 };
