@@ -12,6 +12,7 @@
 #include "metal.h"
 #include "dielectric.h"
 #include "random_util.h"
+#include "moving_sphere.h"
 
 namespace
 {
@@ -20,6 +21,35 @@ namespace
 	std::uniform_real_distribution<float> dist{ 0, 1 };
 
 	const float gamma{ 2.2f };
+}
+
+Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float radius)
+{
+	material* mat{ nullptr };
+	if (chooseMat < 0.8f)
+	{
+		mat = new Lambertian{ vec3{ RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1() } };
+	}
+	else if (chooseMat < 0.9f)
+	{
+		mat = new Metal{
+			vec3{ 0.5f * (1.0f + RandomUtil::getRandom0to1()), 0.5f * (1.0f + RandomUtil::getRandom0to1()), 0.5f * (1.0f + RandomUtil::getRandom0to1()) },
+			0.5f * RandomUtil::getRandom0to1()
+		};
+	}
+	else
+	{
+		mat = new Dielectric{ 1.5f };
+	}
+	
+	if (chooseObj < 0.7f)
+	{
+		return new Sphere(center, radius, mat);
+	}
+	else
+	{
+		return new MovingSphere(center, center + vec3{ 0.0f, 0.5f * RandomUtil::getRandom0to1(), 0.0f }, 0.0f, 1.0f, radius, mat);
+	}
 }
 
 Hitable* makeRandomSphereScene()
@@ -33,35 +63,12 @@ Hitable* makeRandomSphereScene()
 		for (int b = -11; b < 11; b++)
 		{
 			float chooseMat{ RandomUtil::getRandom0to1() };
+			float chooseObj{ RandomUtil::getRandom0to1() };
 			vec3 center{ a + 0.9f * RandomUtil::getRandom0to1(), 0.2f, b + 0.9f*RandomUtil::getRandom0to1() };
 			if ((center - vec3{ 4.0f, 0.2f, 0.0f }).length() > 0.9f)
 			{
-				if (chooseMat < 0.8f)
-				{
-					// diffuse
-					(*list).push_back(new Sphere{ 
-						center, 
-						0.2f, 
-						new Lambertian{vec3{RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1()}} 
-					});
-				}
-				else if (chooseMat < 0.95f)
-				{
-					// metal
-					(*list).push_back(new Sphere{
-						center,
-						0.2f,
-						new Metal{
-							vec3{0.5f * (1.0f + RandomUtil::getRandom0to1()), 0.5f * (1.0f + RandomUtil::getRandom0to1()), 0.5f * (1.0f + RandomUtil::getRandom0to1())},
-							0.5f * RandomUtil::getRandom0to1()
-						}
-					});
-				}
-				else
-				{
-					// glass
-					(*list).push_back(new Sphere{ center, 0.2f, new Dielectric{1.5f} });
-				}
+				auto obj = makeRandomObject(chooseMat, chooseObj, center, 0.2f);
+				(*list).push_back(makeRandomObject(chooseMat, chooseObj, center, 0.2f));
 			}
 		}
 	}

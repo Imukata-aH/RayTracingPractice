@@ -6,7 +6,12 @@ MovingSphere::MovingSphere()
 }
 
 MovingSphere::MovingSphere(vec3 cent0, vec3 cent1, float t0, float t1, float r, material *m) :
-	center0{ cent0 }, center1{ cent1 }, time0{ t0 }, time1{ t1 }, radius{ r }, pMat{ m }
+	Hitable{ m }, 
+	center0 {cent0}, 
+	center1{ cent1 }, 
+	time0{ t0 }, 
+	time1{ t1 }, 
+	radius{ r }
 {
 }
 

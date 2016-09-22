@@ -14,5 +14,4 @@ private:
 	vec3 center0{}, center1{};
 	float time0{}, time1{};
 	float radius{};
-	material* pMat{ nullptr };
 };
