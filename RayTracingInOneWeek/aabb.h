@@ -19,8 +19,8 @@ public:
 
 	// if the ray hits the AABB
 	// ray[in]: ray
-	// tMin[in]:
-	// tMax[in]:
+	// tMin[in]: used as minimum value of t when the ray glaze the bouding box (parallel with an axis). 
+	// tMax[in]: used as maximum value of t when the ray glaze the bouding box (parallel with an axis). 
 	bool hit(const ray& r, float tMin, float tMax)const;
 
 private:
