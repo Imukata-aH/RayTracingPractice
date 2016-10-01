@@ -44,18 +44,21 @@ inline bool AABB::hit(const ray& r, float tMin, float tMax)const
 	{
 		// If r.direction() along an axis is 0, t is +Inf or -Inf. It is OK.
 		// If the ray is not between the bound, t0 and t1 will 'both' be +Inf or -Inf.
-		float t0 = (minBound[i] - r.origin()[i]) / r.diretion()[i];		// the value of t for each axis when the ray hits min bound
-		float t1 = (maxBound[i] - r.origin()[i]) / r.diretion()[i];		// the value of t for each axis when the ray hits max bound
+		float invD{ 1.0f / r.diretion()[i] };
+		float t0 {(minBound[i] - r.origin()[i]) * invD };		// the value of t for each axis when the ray hits min bound
+		float t1{ (maxBound[i] - r.origin()[i]) * invD };		// the value of t for each axis when the ray hits max bound
 
 		// A ray can go to negative direction.
 		// So min and max t is given by comparing t0 and t1.
-		float temp_tMin = ffmin(t0, t1);
-		float temp_tMax = ffmax(t0, t1);
+		if (invD < 0.0f)
+		{
+			std::swap(t0, t1);
+		}
 
 		// Comparing with t along previous axis.
 		// If calculated t is NaN, comparison will be false. In the case, the second argument is adopted.
-		tMin = ffmax(temp_tMin, tMin);
-		tMax = ffmin(temp_tMax, tMax);
+		tMin = t0 > tMin ? t0 : tMin;
+		tMax = t1 < tMax ? t1 : tMax;
 
 		// If tMin and tMax is reversed, intervals for each axis are not overlapped.
 		if (tMax <= tMin)
