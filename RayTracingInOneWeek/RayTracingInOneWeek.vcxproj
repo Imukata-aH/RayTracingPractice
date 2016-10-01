@@ -157,6 +157,7 @@
     <ClCompile Include="sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="aabb.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="checker_texture.h" />
     <ClInclude Include="dielectric.h" />
