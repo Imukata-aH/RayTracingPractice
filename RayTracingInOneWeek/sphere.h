@@ -10,6 +10,7 @@ public:
 	Sphere(vec3 center, float radius, material* material) : Hitable(material), center(center), radius(radius){};
 
 	virtual bool hit(const ray& r, float tMin, float tMax, HitRecord& rec) const;
+	virtual bool boundingBox(float t0, float t1, AABB& box) const;
 
 	vec3 getCenter()const { return center; }
 	float getRadius()const { return radius; }

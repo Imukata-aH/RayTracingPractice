@@ -8,6 +8,7 @@ public:
 	MovingSphere();
 	MovingSphere(vec3 cent0, vec3 cent1, float t0, float t1, float r, material *m);
 	virtual bool hit(const ray& r, float tMin, float tMax, HitRecord& rec) const;
+	virtual bool boundingBox(float t0, float t1, AABB& box) const;
 
 	vec3 center(float time) const;
 private:

@@ -1,5 +1,6 @@
 #include "moving_sphere.h"
 #include "ray.h"
+#include "aabb.h"
 
 MovingSphere::MovingSphere()
 {
@@ -53,6 +54,31 @@ bool MovingSphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) con
 	}
 
 	return false;
+}
+
+bool MovingSphere::boundingBox(float t0, float t1, AABB& box) const
+{
+	// Compound two bounding boxes, a box at time t0 and a box at time t1.
+	AABB box0{ center(t0) - vec3{ radius, radius, radius }, center(t0) + vec3{ radius, radius, radius } };
+	AABB box1{ center(t1) - vec3{ radius, radius, radius }, center(t1) + vec3{ radius, radius, radius } };
+
+	vec3 smallBound
+	{
+		fmin(box0.min().x(), box1.min().x()),
+		fmin(box0.min().y(), box1.min().y()),
+		fmin(box0.min().z(), box1.min().z())
+	};
+
+	vec3 bigBound
+	{
+		fmax(box0.max().x(), box1.max().x()),
+		fmax(box0.max().y(), box1.max().y()),
+		fmax(box0.max().z(), box1.max().z())
+	};
+
+	box = AABB{ smallBound, bigBound };
+
+	return true;
 }
 
 // move linearly between center0 and center1
