@@ -20,5 +20,4 @@ public:
 	// TODO: implement destructor to release vector's resources.
 private:
 	std::vector<Hitable*>* list;
-	AABB makeSurrondingBox(AABB& box0 , AABB& box1) const;
 };

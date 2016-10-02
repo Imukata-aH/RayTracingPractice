@@ -16,6 +16,7 @@
 #include "moving_sphere.h"
 #include "constant_texture.h"
 #include "checker_texture.h"
+#include "bvh_node.h"
 
 namespace
 {
@@ -102,7 +103,7 @@ Hitable* makeRandomSphereScene()
 		new Metal{vec3{0.7f, 0.6f, 0.5f}, 0.0f}
 	});
 
-	return new HitableList{ list };
+	return new BVHNode{ &list->front(), static_cast<int>(list->size()), 0.0f, 1.0f };
 }
 
 vec3 colorizeFromRay(const ray& r, const Hitable& world, int depth)

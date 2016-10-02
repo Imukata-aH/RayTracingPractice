@@ -25,7 +25,7 @@ bool HitableList::hit(const ray& r, float tMin, float tMax, HitRecord& rec) cons
 
 bool HitableList::boundingBox(float t0, float t1, AABB& box) const
 {
-	int listSize = list->size();
+	size_t listSize{ list->size() };
 	if (listSize < 1)
 		return false;
 
@@ -44,7 +44,7 @@ bool HitableList::boundingBox(float t0, float t1, AABB& box) const
 	{
 		if ((*list)[i]->boundingBox(t0, t1, tempBox))
 		{
-			box = makeSurrondingBox(box, tempBox);
+			box = AABB::makeSurrondingBox(box, tempBox);
 		}
 		else
 		{
@@ -53,23 +53,4 @@ bool HitableList::boundingBox(float t0, float t1, AABB& box) const
 	}
 	
 	return true;
-}
-
-AABB HitableList::makeSurrondingBox(AABB& box0, AABB& box1) const
-{
-	vec3 smallBound
-	{
-		fmin(box0.min().x(), box1.min().x()),
-		fmin(box0.min().y(), box1.min().y()),
-		fmin(box0.min().z(), box1.min().z())
-	};
-
-	vec3 bigBound
-	{
-		fmax(box0.max().x(), box1.max().x()),
-		fmax(box0.max().y(), box1.max().y()),
-		fmax(box0.max().z(), box1.max().z())
-	};
-
-	return AABB{ smallBound, bigBound };
 }

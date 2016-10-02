@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bvh_node.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="dielectric.cpp" />
     <ClCompile Include="hitable_list.cpp" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aabb.h" />
+    <ClInclude Include="bvh_node.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="checker_texture.h" />
     <ClInclude Include="dielectric.h" />

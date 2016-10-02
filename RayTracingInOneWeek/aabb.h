@@ -23,6 +23,8 @@ public:
 	// tMax[in]: used as maximum value of t when the ray glaze the bouding box (parallel with an axis). 
 	bool hit(const ray& r, float tMin, float tMax)const;
 
+	static AABB makeSurrondingBox(AABB& box0, AABB& box1);
+
 private:
 	vec3 minBound;
 	vec3 maxBound;
@@ -65,4 +67,23 @@ inline bool AABB::hit(const ray& r, float tMin, float tMax)const
 			return false;
 	}
 	return true;
+}
+
+inline AABB AABB::makeSurrondingBox(AABB& box0, AABB& box1)
+{
+	vec3 smallBound
+	{
+		fmin(box0.min().x(), box1.min().x()),
+		fmin(box0.min().y(), box1.min().y()),
+		fmin(box0.min().z(), box1.min().z())
+	};
+
+	vec3 bigBound
+	{
+		fmax(box0.max().x(), box1.max().x()),
+		fmax(box0.max().y(), box1.max().y()),
+		fmax(box0.max().z(), box1.max().z())
+	};
+
+	return AABB{ smallBound, bigBound };
 }

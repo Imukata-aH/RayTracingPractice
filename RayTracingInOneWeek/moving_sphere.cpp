@@ -62,21 +62,7 @@ bool MovingSphere::boundingBox(float t0, float t1, AABB& box) const
 	AABB box0{ center(t0) - vec3{ radius, radius, radius }, center(t0) + vec3{ radius, radius, radius } };
 	AABB box1{ center(t1) - vec3{ radius, radius, radius }, center(t1) + vec3{ radius, radius, radius } };
 
-	vec3 smallBound
-	{
-		fmin(box0.min().x(), box1.min().x()),
-		fmin(box0.min().y(), box1.min().y()),
-		fmin(box0.min().z(), box1.min().z())
-	};
-
-	vec3 bigBound
-	{
-		fmax(box0.max().x(), box1.max().x()),
-		fmax(box0.max().y(), box1.max().y()),
-		fmax(box0.max().z(), box1.max().z())
-	};
-
-	box = AABB{ smallBound, bigBound };
+	box = AABB::makeSurrondingBox(box0, box1);
 
 	return true;
 }
