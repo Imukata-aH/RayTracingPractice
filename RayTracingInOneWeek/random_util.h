@@ -5,6 +5,7 @@ class vec3;
 
 class RandomUtil
 {
+
 public:
 	static float getRandom0to1();
 	static vec3 getrRandomPointInUnitSphere();

@@ -3,7 +3,7 @@
 
 namespace
 {
-	std::random_device rnd;
+	static std::random_device rnd;
 }
 
 std::mt19937 RandomUtil::mt{ rnd() };
