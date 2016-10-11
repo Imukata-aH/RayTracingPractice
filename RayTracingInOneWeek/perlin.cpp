@@ -41,6 +41,11 @@ float Perlin::noise(const vec3& p) const
 	float v{ p.y() - floor(p.y()) };
 	float w{ p.z() - floor(p.z()) };
 
+	// using hermite cubic
+	u = u*u*(3 - 2 * u);
+	v = v*v*(3 - 2 * v);
+	w = w*w*(3 - 2 * w);
+
 	int size{ static_cast<int>(::parameterSize - 1) };
 	int i{ static_cast<int>(floor(p.x())) };
 	int j{ static_cast<int>(floor(p.y())) };
@@ -52,7 +57,7 @@ float Perlin::noise(const vec3& p) const
 		{
 			for (size_t dk = 0; dk < 2; dk++)
 			{
-				c[di][dj][dk] = ranFloat()[permX()[(i + di)&size] ^ permY()[(j + dj) & 255] ^ permZ()[(k + dk) & 255]];
+				c[di][dj][dk] = ranFloat()[permX()[(i + di)&size] ^ permY()[(j + dj) & size] ^ permZ()[(k + dk) & size]];
 			}
 		}
 	}
