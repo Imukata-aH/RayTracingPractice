@@ -7,6 +7,28 @@ using namespace std;
 namespace
 {
 	const size_t parameterSize{ 256 };
+
+	// trilinear interpolation
+	// c[2][2][2]: the values at each vertex of the box
+	// u, v, w: a position within the box
+	inline float trilinearInterp(float c[2][2][2], float u, float v, float w)
+	{
+		float accum{ 0 };
+		for (size_t i = 0; i < 2; i++)
+		{
+			for (size_t j = 0; j < 2; j++)
+			{
+				for (size_t k = 0; k < 2; k++)
+				{
+					accum += (i*u + (1 - i)*(1 - u))*
+							 (j*v + (1 - j)*(1 - v))*
+							 (k*w + (1 - k)*(1 - w))*c[i][j][k];
+				}
+			}
+		}
+
+		return accum;
+	}
 }
 
 Perlin::Perlin()
@@ -20,11 +42,22 @@ float Perlin::noise(const vec3& p) const
 	float w{ p.z() - floor(p.z()) };
 
 	int size{ static_cast<int>(::parameterSize - 1) };
-	int i{ int(4 * p.x()) & size };
-	int j{ int(4 * p.y()) & size };
-	int k{ int(4 * p.z()) & size };
+	int i{ static_cast<int>(floor(p.x())) };
+	int j{ static_cast<int>(floor(p.y())) };
+	int k{ static_cast<int>(floor(p.z())) };
+	float c[2][2][2];
+	for (size_t di = 0; di < 2; di++)
+	{
+		for (size_t dj = 0; dj < 2; dj++)
+		{
+			for (size_t dk = 0; dk < 2; dk++)
+			{
+				c[di][dj][dk] = ranFloat()[permX()[(i + di)&size] ^ permY()[(j + dj) & 255] ^ permZ()[(k + dk) & 255]];
+			}
+		}
+	}
 
-	return ranFloat()[permX()[i] ^ permY()[j] ^ permZ()[k]];
+	return trilinearInterp(c, u, v, w);
 }
 
 const vector<float>& Perlin::ranFloat()
