@@ -63,7 +63,7 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 
 Hitable* makeTwoPerlinSphereScene()
 {
-	Texture* noiseTexture = new NoiseTexture(4.0f);
+	Texture* noiseTexture = new NoiseTexture();
 	std::vector<Hitable*>* list{ new std::vector<Hitable*>(2) };
 	(*list)[0] = new Sphere{ vec3{0.0f, -1000.0f, 0.0f}, 1000.0f, new Lambertian{noiseTexture} };
 	(*list)[1] = new Sphere{ vec3{ 0.0f, 2.0f, 0.0f }, 2.0f, new Lambertian{ noiseTexture } };

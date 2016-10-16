@@ -29,6 +29,31 @@ namespace
 
 		return accum;
 	}
+
+	inline float perlinInterpolation(vec3 c[2][2][2], float u, float v, float w)
+	{
+		// using hermite cubic
+		float uu{ u*u*(3 - 2 * u) };
+		float vv{ v*v*(3 - 2 * v) };
+		float ww{ w*w*(3 - 2 * w) };
+
+		float accum{ 0 };
+		for (size_t i = 0; i < 2; i++)
+		{
+			for (size_t j = 0; j < 2; j++)
+			{
+				for (size_t k = 0; k < 2; k++)
+				{
+					vec3 weight_v{ u - i, v - j,w - k };
+					accum += (i*uu + (1 - i)*(1 - uu))*
+							 (j*vv + (1 - j)*(1 - vv))*
+							 (k*ww + (1 - k)*(1 - ww))*dot(c[i][j][k], weight_v);
+				}
+			}
+		}
+
+		return accum;
+	}
 }
 
 Perlin::Perlin()
@@ -41,33 +66,42 @@ float Perlin::noise(const vec3& p) const
 	float v{ p.y() - floor(p.y()) };
 	float w{ p.z() - floor(p.z()) };
 
-	// using hermite cubic
-	u = u*u*(3 - 2 * u);
-	v = v*v*(3 - 2 * v);
-	w = w*w*(3 - 2 * w);
-
 	int size{ static_cast<int>(::parameterSize - 1) };
 	int i{ static_cast<int>(floor(p.x())) };
 	int j{ static_cast<int>(floor(p.y())) };
 	int k{ static_cast<int>(floor(p.z())) };
-	float c[2][2][2];
+	vec3 c[2][2][2];
 	for (size_t di = 0; di < 2; di++)
 	{
 		for (size_t dj = 0; dj < 2; dj++)
 		{
 			for (size_t dk = 0; dk < 2; dk++)
 			{
-				c[di][dj][dk] = ranFloat()[permX()[(i + di)&size] ^ permY()[(j + dj) & size] ^ permZ()[(k + dk) & size]];
+				c[di][dj][dk] = ranVec()[permX()[(i + di)&size] ^ permY()[(j + dj) & size] ^ permZ()[(k + dk) & size]];
 			}
 		}
 	}
 
-	return trilinearInterp(c, u, v, w);
+	return perlinInterpolation(c, u, v, w);
 }
 
-const vector<float>& Perlin::ranFloat()
+float Perlin::turbulance(const vec3& p, int depth) const
 {
-	static vector<float>* rf = perlinGenerate();
+	float accum{ 0.0f };
+	vec3 tempP{ p };
+	float weight{ 1.0f };
+	for (size_t i = 0; i < depth; i++)
+	{
+		accum += weight * noise(tempP);
+		weight *= 0.5f;
+		tempP *= 2;			
+	}
+	return fabs(accum);
+}
+
+const vector<vec3>& Perlin::ranVec()
+{
+	static vector<vec3>* rf = perlinGenerate();
 	return *rf;
 }
 
@@ -89,12 +123,12 @@ const vector<int>& Perlin::permZ()
 	return *pZ;
 }
 
-vector<float>* Perlin::perlinGenerate()
+vector<vec3>* Perlin::perlinGenerate()
 {
-	vector<float>* p = new vector<float>(parameterSize);
+	vector<vec3>* p = new vector<vec3>(parameterSize);
 	for (size_t i = 0; i < parameterSize; i++)
 	{
-		(*p)[i] = RandomUtil::getRandom0to1();
+		(*p)[i] = unit_vector(vec3{ -1 + 2 * RandomUtil::getRandom0to1(), -1 + 2 * RandomUtil::getRandom0to1(), -1 + 2 * RandomUtil::getRandom0to1() });
 	}
 	return p;
 }
