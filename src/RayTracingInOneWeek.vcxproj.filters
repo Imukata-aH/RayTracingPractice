@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\bvh_node.cpp" />
+    <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\dielectric.cpp" />
+    <ClCompile Include="src\hitable_list.cpp" />
+    <ClCompile Include="src\labertian.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\metal.cpp" />
+    <ClCompile Include="src\moving_sphere.cpp" />
+    <ClCompile Include="src\noise_texture.cpp" />
+    <ClCompile Include="src\perlin.cpp" />
+    <ClCompile Include="src\random_util.cpp" />
+    <ClCompile Include="src\sphere.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\aabb.h" />
+    <ClInclude Include="include\bvh_node.h" />
+    <ClInclude Include="include\camera.h" />
+    <ClInclude Include="include\checker_texture.h" />
+    <ClInclude Include="include\constant_texture.h" />
+    <ClInclude Include="include\dielectric.h" />
+    <ClInclude Include="include\hitable.h" />
+    <ClInclude Include="include\hitable_list.h" />
+    <ClInclude Include="include\lambertian.h" />
+    <ClInclude Include="include\material.h" />
+    <ClInclude Include="include\metal.h" />
+    <ClInclude Include="include\moving_sphere.h" />
+    <ClInclude Include="include\noise_texture.h" />
+    <ClInclude Include="include\perlin.h" />
+    <ClInclude Include="include\random_util.h" />
+    <ClInclude Include="include\ray.h" />
+    <ClInclude Include="include\sphere.h" />
+    <ClInclude Include="include\texture.h" />
+    <ClInclude Include="include\vec3.h" />
+  </ItemGroup>
+</Project>

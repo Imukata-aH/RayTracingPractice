@@ -18,6 +18,41 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\bvh_node.cpp" />
+    <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\dielectric.cpp" />
+    <ClCompile Include="src\hitable_list.cpp" />
+    <ClCompile Include="src\labertian.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\metal.cpp" />
+    <ClCompile Include="src\moving_sphere.cpp" />
+    <ClCompile Include="src\noise_texture.cpp" />
+    <ClCompile Include="src\perlin.cpp" />
+    <ClCompile Include="src\random_util.cpp" />
+    <ClCompile Include="src\sphere.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\aabb.h" />
+    <ClInclude Include="include\bvh_node.h" />
+    <ClInclude Include="include\camera.h" />
+    <ClInclude Include="include\checker_texture.h" />
+    <ClInclude Include="include\constant_texture.h" />
+    <ClInclude Include="include\dielectric.h" />
+    <ClInclude Include="include\hitable.h" />
+    <ClInclude Include="include\hitable_list.h" />
+    <ClInclude Include="include\lambertian.h" />
+    <ClInclude Include="include\material.h" />
+    <ClInclude Include="include\metal.h" />
+    <ClInclude Include="include\moving_sphere.h" />
+    <ClInclude Include="include\noise_texture.h" />
+    <ClInclude Include="include\perlin.h" />
+    <ClInclude Include="include\random_util.h" />
+    <ClInclude Include="include\ray.h" />
+    <ClInclude Include="include\sphere.h" />
+    <ClInclude Include="include\texture.h" />
+    <ClInclude Include="include\vec3.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3E6B4824-CB16-4D13-9D3B-301E8F4BC5AD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -89,6 +124,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -103,6 +139,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,6 +156,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,6 +175,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,41 +184,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="bvh_node.cpp" />
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="dielectric.cpp" />
-    <ClCompile Include="hitable_list.cpp" />
-    <ClCompile Include="labertian.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="metal.cpp" />
-    <ClCompile Include="moving_sphere.cpp" />
-    <ClCompile Include="noise_texture.cpp" />
-    <ClCompile Include="perlin.cpp" />
-    <ClCompile Include="random_util.cpp" />
-    <ClCompile Include="sphere.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="aabb.h" />
-    <ClInclude Include="bvh_node.h" />
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="checker_texture.h" />
-    <ClInclude Include="dielectric.h" />
-    <ClInclude Include="constant_texture.h" />
-    <ClInclude Include="hitable.h" />
-    <ClInclude Include="hitable_list.h" />
-    <ClInclude Include="lambertian.h" />
-    <ClInclude Include="material.h" />
-    <ClInclude Include="metal.h" />
-    <ClInclude Include="moving_sphere.h" />
-    <ClInclude Include="noise_texture.h" />
-    <ClInclude Include="perlin.h" />
-    <ClInclude Include="random_util.h" />
-    <ClInclude Include="ray.h" />
-    <ClInclude Include="sphere.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="vec3.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
