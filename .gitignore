@@ -1,5 +1,8 @@
 x64/Debug/RayTracingInOneWeek.exe
 *.db
 *.opendb
+*.log
 x64/Release/RayTracingInOneWeek.exe
 .vs/
+*.tlog/
+*.filters
