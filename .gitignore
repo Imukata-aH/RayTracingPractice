@@ -2,3 +2,4 @@ x64/Debug/RayTracingInOneWeek.exe
 *.db
 *.opendb
 x64/Release/RayTracingInOneWeek.exe
+.vs/
