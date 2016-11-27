@@ -6,3 +6,4 @@ x64/Release/RayTracingInOneWeek.exe
 .vs/
 *.tlog/
 *.filters
+*.exe
