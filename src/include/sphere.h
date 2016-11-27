@@ -18,4 +18,7 @@ public:
 private:
 	vec3 center;
 	float radius;
+
+	//calculate UV coordinate by a hit point on the Sphere
+	void getSphereUV(const vec3& p, float& u, float& v);
 };

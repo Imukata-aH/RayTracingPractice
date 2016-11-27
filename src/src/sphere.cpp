@@ -1,4 +1,6 @@
-﻿#include "sphere.h"
+﻿#include <math.h>
+
+#include "sphere.h"
 #include "ray.h"
 #include "aabb.h"
 
@@ -45,4 +47,14 @@ bool Sphere::boundingBox(float t0, float t1, AABB& box) const
 {
 	box = AABB{ center - vec3{radius, radius, radius}, center + vec3{radius, radius, radius} };
 	return true;
+}
+
+void getSphereUV(const vec3& p, float& u, float& v)
+{
+	// calculate spherical coordinate of the hit point
+	float phi = atan2(p.z(), p.x());
+	float theta = asin(p.y());
+	// normalization
+	u = 1 - (phi + M_PI) / (2 * M_PI);
+	v = (theta + M_PI / 2) / M_PI;
 }
