@@ -9,6 +9,12 @@ class material
 {
 public:
 	virtual bool scatter(const ray& r_in, const HitRecord& rec, vec3& attenuation, ray& scattered) const = 0;
+	virtual vec3 emitted(float u, float v, const vec3& p) const
+	{
+		// not emit any light so that I don't have to make all the non-emitting materials implement emitted().
+		return vec3{ 0.0f, 0.0f, 0.0f };
+	}
+
 protected:
 	vec3 reflect(const vec3& v, const vec3& n) const
 	{
