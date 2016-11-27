@@ -166,22 +166,20 @@ vec3 colorizeFromRay(const ray& r, const Hitable& world, int depth)
 	{
 		ray scattered;
 		vec3 attenuation;
+		vec3 emitted = rec.material->emitted(rec.u, rec.v, rec.hitPoint);
 		if (depth < 50 && rec.material->scatter(r, rec, attenuation, scattered))	// 反射回数は50回までに制限
 		{
 			// 再帰的に反射を計算
-			return attenuation * colorizeFromRay(scattered, world, depth + 1);
+			return emitted + attenuation * colorizeFromRay(scattered, world, depth + 1);
 		}
 		else
 		{
-			return vec3{ 0, 0, 0 };
+			return emitted;
 		}
 	}
 	else
 	{
-		// 最終的にヒットしなかったrayは周囲の色（今回は方向ベクトルのy成分を使って空の色に見立てている）を返す
-		vec3 unit_direction = unit_vector(r.diretion());
-		float t = 0.5f*(unit_direction.y() + 1.0f);
-		return (1.0f - t)*vec3(1.0f, 1.0f, 1.0f) + t*vec3(0.5f, 0.7f, 1.0f);
+		return vec3{ 0.0f, 0.0f, 0.0f };
 	}
 }
 
