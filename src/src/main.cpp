@@ -70,8 +70,6 @@ Hitable* makeSceneImageTextureSphere(const char* imageFileName)
 	int w, h, nn;
 	unsigned char* texData{ stbi_load(imageFileName, &w, &h, &nn, 0) };
 	material* mat = new Lambertian(new ImageTexture(texData, w, h));
-	//Texture* noiseTexture = new NoiseTexture();
-	//material* mat = new Lambertian(noiseTexture);
 	Sphere* imageSphere{ new Sphere(vec3{0.0f, 0.0f, 0.0f}, 2.0f, mat) };
 	return imageSphere;
 }
