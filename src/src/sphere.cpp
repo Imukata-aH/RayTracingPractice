@@ -26,6 +26,7 @@ bool Sphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) const
 			rec.hitPoint = r.point_at_parameter(hitPointParam);
 			rec.normal = (rec.hitPoint - center) / radius;
 			rec.material = mat;
+			getSphereUV((rec.hitPoint - this->center) / radius, rec.u, rec.v);	// calculate uv as unit sphere
 			return true;
 		}
 
@@ -36,6 +37,7 @@ bool Sphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) const
 			rec.hitPoint = r.point_at_parameter(hitPointParam);
 			rec.normal = (rec.hitPoint - center) / radius;
 			rec.material = mat;
+			getSphereUV((rec.hitPoint - this->center) / radius, rec.u, rec.v);	// calculate uv as unit sphere
 			return true;
 		}
 	}
@@ -49,12 +51,12 @@ bool Sphere::boundingBox(float t0, float t1, AABB& box) const
 	return true;
 }
 
-void getSphereUV(const vec3& p, float& u, float& v)
+void Sphere::getSphereUV(const vec3& p, float& u, float& v) const
 {
 	// calculate spherical coordinate of the hit point
 	float phi = atan2(p.z(), p.x());
 	float theta = asin(p.y());
 	// normalization
-	u = 1 - (phi + M_PI) / (2 * M_PI);
-	v = (theta + M_PI / 2) / M_PI;
+	u = 1.0f - (phi + (float)M_PI) / (2.0f * (float)M_PI);
+	v = (theta + (float)M_PI / 2.0f) / (float)M_PI;
 }
