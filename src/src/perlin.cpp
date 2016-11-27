@@ -1,4 +1,4 @@
-#include "perlin.h"
+﻿#include "perlin.h"
 #include "vec3.h"
 #include "random_util.h"
 
@@ -90,7 +90,7 @@ float Perlin::turbulance(const vec3& p, int depth) const
 	float accum{ 0.0f };
 	vec3 tempP{ p };
 	float weight{ 1.0f };
-	for (size_t i = 0; i < depth; i++)
+	for (int i = 0; i < depth; i++)
 	{
 		accum += weight * noise(tempP);
 		weight *= 0.5f;

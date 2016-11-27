@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <fstream>
 #include <string>
 #include <random>
@@ -143,9 +143,9 @@ vec3 colorizeFromRay(const ray& r, const Hitable& world, int depth)
 	{
 		ray scattered;
 		vec3 attenuation;
-		if (depth < 50 && rec.material->scatter(r, rec, attenuation, scattered))	// ”½Ë‰ñ”‚Í50‰ñ‚Ü‚Å‚É§ŒÀ
+		if (depth < 50 && rec.material->scatter(r, rec, attenuation, scattered))	// åå°„å›æ•°ã¯50å›ã¾ã§ã«åˆ¶é™
 		{
-			// Ä‹A“I‚É”½Ë‚ğŒvZ
+			// å†å¸°çš„ã«åå°„ã‚’è¨ˆç®—
 			return attenuation * colorizeFromRay(scattered, world, depth + 1);
 		}
 		else
@@ -155,7 +155,7 @@ vec3 colorizeFromRay(const ray& r, const Hitable& world, int depth)
 	}
 	else
 	{
-		// ÅI“I‚Éƒqƒbƒg‚µ‚È‚©‚Á‚½ray‚ÍüˆÍ‚ÌFi¡‰ñ‚Í•ûŒüƒxƒNƒgƒ‹‚Ìy¬•ª‚ğg‚Á‚Ä‹ó‚ÌF‚ÉŒ©—§‚Ä‚Ä‚¢‚éj‚ğ•Ô‚·
+		// æœ€çµ‚çš„ã«ãƒ’ãƒƒãƒˆã—ãªã‹ã£ãŸrayã¯å‘¨å›²ã®è‰²ï¼ˆä»Šå›ã¯æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã®yæˆåˆ†ã‚’ä½¿ã£ã¦ç©ºã®è‰²ã«è¦‹ç«‹ã¦ã¦ã„ã‚‹ï¼‰ã‚’è¿”ã™
 		vec3 unit_direction = unit_vector(r.diretion());
 		float t = 0.5f*(unit_direction.y() + 1.0f);
 		return (1.0f - t)*vec3(1.0f, 1.0f, 1.0f) + t*vec3(0.5f, 0.7f, 1.0f);
@@ -169,7 +169,7 @@ int main(int argc, char** argv)
 	std::string fileName = argv[1];
 
 	std::ofstream outputFile;
-	outputFile.open(fileName, std::ios::out);	// TODO: HDR‚É‚à‘Î‰‚Å‚«‚é‚æ‚¤JXR‚Å•Û‘¶‚µ‚½‚¢
+	outputFile.open(fileName, std::ios::out);	// TODO: HDRã«ã‚‚å¯¾å¿œã§ãã‚‹ã‚ˆã†JXRã§ä¿å­˜ã—ãŸã„
 
 	int nx{ 800 };
 	int ny{ 600 };
@@ -191,7 +191,7 @@ int main(int argc, char** argv)
 		for (int i = 0; i < nx; i++)
 		{
 			vec3 color{ 0.0f, 0.0f, 0.0f };
-			// ƒAƒ“ƒ`ƒGƒCƒŠƒAƒVƒ“ƒO‚ğs‚¤‚½‚ßA1‚Â‚ÌƒsƒNƒZƒ‹‚©‚ç•ûŒü‚ğ‹Í‚©‚É•Ï‚¦‚½ray‚ğ•ú‚¿A‚»‚ê‚ç‚ÌF‚ğ•½‹Ï‚µ‚Ä‚»‚ÌƒsƒNƒZƒ‹‚ÌF‚Æ‚·‚é
+			// ã‚¢ãƒ³ãƒã‚¨ã‚¤ãƒªã‚¢ã‚·ãƒ³ã‚°ã‚’è¡Œã†ãŸã‚ã€1ã¤ã®ãƒ”ã‚¯ã‚»ãƒ«ã‹ã‚‰æ–¹å‘ã‚’åƒ…ã‹ã«å¤‰ãˆãŸrayã‚’æ”¾ã¡ã€ãã‚Œã‚‰ã®è‰²ã‚’å¹³å‡ã—ã¦ãã®ãƒ”ã‚¯ã‚»ãƒ«ã®è‰²ã¨ã™ã‚‹
 			for (int s = 0; s < ns; s++)
 			{
 				float u = float(i + dist(mt)) / float(nx);
@@ -201,7 +201,7 @@ int main(int argc, char** argv)
 			}
 			color /= float(ns);
 
-			// ƒKƒ“ƒ}•â³
+			// ã‚¬ãƒ³ãƒè£œæ­£
 			color[0] = pow(color[0], inv_gamma);
 			color[1] = pow(color[1], inv_gamma);
 			color[2] = pow(color[2], inv_gamma);

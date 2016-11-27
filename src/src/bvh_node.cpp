@@ -1,4 +1,4 @@
-#include "bvh_node.h"
+﻿#include "bvh_node.h"
 #include "random_util.h"
 
 BVHNode::BVHNode()

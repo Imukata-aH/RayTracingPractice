@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "ray.h"
 
@@ -12,10 +12,10 @@ public:
 	const ray getRay(const float s, const float t) const;
 
 private:
-	vec3 origin;			// ƒJƒƒ‰ˆÊ’uiray‚ÌŒ´“_j	ray‚ÍƒJƒƒ‰ˆÊ’u‚©‚çƒJƒƒ‰‚ÌŒü‚©‚Á‚Ä‚¢‚é•ûŒü‚É”ò‚Î‚·‚Ì‚ÅAƒJƒƒ‰ˆÊ’u‚ğg‚Á‚Äray‚ğŒvZ‚·‚é
-	vec3 lowerLeftCorner;	// ƒJƒƒ‰irayj‚Ì–Ú•W’n“_‚Æ‚È‚é•½–Ê‚Ì¶‰ºÀ•W
-	vec3 horizontal;		// ƒJƒƒ‰irayj‚Ì–Ú•W’n“_‚Æ‚È‚é•½–Ê‚Ì…•½•ûŒü’·‚³
-	vec3 vertical;			// ƒJƒƒ‰irayj‚Ì–Ú•W’n“_‚Æ‚È‚é•½–Ê‚Ì‚’¼•ûŒü’·‚³
+	vec3 origin;			// ã‚«ãƒ¡ãƒ©ä½ç½®ï¼ˆrayã®åŸç‚¹ï¼‰	rayã¯ã‚«ãƒ¡ãƒ©ä½ç½®ã‹ã‚‰ã‚«ãƒ¡ãƒ©ã®å‘ã‹ã£ã¦ã„ã‚‹æ–¹å‘ã«é£›ã°ã™ã®ã§ã€ã‚«ãƒ¡ãƒ©ä½ç½®ã‚’ä½¿ã£ã¦rayã‚’è¨ˆç®—ã™ã‚‹
+	vec3 lowerLeftCorner;	// ã‚«ãƒ¡ãƒ©ï¼ˆrayï¼‰ã®ç›®æ¨™åœ°ç‚¹ã¨ãªã‚‹å¹³é¢ã®å·¦ä¸‹åº§æ¨™
+	vec3 horizontal;		// ã‚«ãƒ¡ãƒ©ï¼ˆrayï¼‰ã®ç›®æ¨™åœ°ç‚¹ã¨ãªã‚‹å¹³é¢ã®æ°´å¹³æ–¹å‘é•·ã•
+	vec3 vertical;			// ã‚«ãƒ¡ãƒ©ï¼ˆrayï¼‰ã®ç›®æ¨™åœ°ç‚¹ã¨ãªã‚‹å¹³é¢ã®å‚ç›´æ–¹å‘é•·ã•
 	vec3 u, v, w;			// Camera's corrdinate
 	float lensRadius;		// virtual lens radius in front of film plane
 	float timeOpen, timeClose; // shutter open/close time.

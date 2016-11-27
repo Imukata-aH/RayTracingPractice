@@ -1,4 +1,4 @@
-#include "camera.h"
+ï»¿#include "camera.h"
 #include "random_util.h"
 
 namespace
@@ -38,7 +38,7 @@ Camera::Camera(vec3 lookFrom, vec3 lookAt, vec3 vUp, float vfov, float aspect, f
 
 	origin = lookFrom;
 	// resize and relocation the picture plane by the distance of a lens
-	// focusDist ”{‚³‚ê‚½‘å‚«‚³‚Ì picture plane ‚ª focusDist ”{‚Ì‹——£‚ÉˆÊ’u‚³‚ê‚é‚Ì‚ÅAo—Í‚³‚ê‚é‰æ‘œ‚Ì‘å‚«‚³‚Íˆê’v
+	// focusDist å€ã•ã‚ŒãŸå¤§ãã•ã® picture plane ãŒ focusDist å€ã®è·é›¢ã«ä½ç½®ã•ã‚Œã‚‹ã®ã§ã€å‡ºåŠ›ã•ã‚Œã‚‹ç”»åƒã®å¤§ãã•ã¯ä¸€è‡´
 	lowerLeftCorner = origin - halfWidth*focusDist*u - halfHeight*focusDist*v - focusDist*w;
 	horizontal = 2 * halfWidth * focusDist * u;
 	vertical = 2 * halfHeight * focusDist * v;

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "aabb.h"
 #include "hitable.h"

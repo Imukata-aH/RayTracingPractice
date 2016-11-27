@@ -1,4 +1,4 @@
-#include "dielectric.h"
+ï»¿#include "dielectric.h"
 #include "ray.h"
 #include "hitable.h"
 #include "vec3.h"
@@ -24,24 +24,24 @@ bool Dielectric::scatter(const ray& r_in, const HitRecord& rec, vec3& attenuatio
 	float ni_over_nt{};
 	bool isRefracted{};
 	float reflectProbability{};
-	float cosine{};	// “üËŒõü‚ÆÚG“_‚Ì•\–Ê–@üƒxƒNƒgƒ‹‚ÌŠÔ‚Ìcosine
+	float cosine{};	// å…¥å°„å…‰ç·šã¨æ¥è§¦ç‚¹ã®è¡¨é¢æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã®é–“ã®cosine
 	if (dot(r_in.diretion(), rec.normal) > 0)
 	{
-		// ÚG“_‚Ìnormal‚Æray‚Ì“üËŠp‚ª90‹–¢– -> ray‚ª•¨‘Ì“à•”‚©‚ç‹ó‹C’†‚ÖŒü‚©‚Á‚Ä‚¢‚é
-		outward_normal = -rec.normal;	// –@üƒxƒNƒgƒ‹‚Íray‚Ì“üËŠp‚É‚©‚©‚í‚ç‚¸A‹…‚ÌŠO‘¤•ûŒü‚ÉŒü‚©‚Á‚Ä‚¢‚éB•¨‘Ì“à•”‚©‚ç‚Ì‹üÜ‚ğŒvZ‚·‚é‚½‚ßA–@ü‚ğ•¨‘Ì“à•”‚ÖŒü‚¯‚é
-		isRefracted = refract(r_in.diretion(), outward_normal, refIdx, 1.0f, refracted); // ‹ó‹C‚Ì‹üÜ—¦‚ğ1‚Æ‚·‚éB
+		// æ¥è§¦ç‚¹ã®normalã¨rayã®å…¥å°„è§’ãŒ90Â°æœªæº€ -> rayãŒç‰©ä½“å†…éƒ¨ã‹ã‚‰ç©ºæ°—ä¸­ã¸å‘ã‹ã£ã¦ã„ã‚‹
+		outward_normal = -rec.normal;	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã¯rayã®å…¥å°„è§’ã«ã‹ã‹ã‚ã‚‰ãšã€çƒã®å¤–å´æ–¹å‘ã«å‘ã‹ã£ã¦ã„ã‚‹ã€‚ç‰©ä½“å†…éƒ¨ã‹ã‚‰ã®å±ˆæŠ˜ã‚’è¨ˆç®—ã™ã‚‹ãŸã‚ã€æ³•ç·šã‚’ç‰©ä½“å†…éƒ¨ã¸å‘ã‘ã‚‹
+		isRefracted = refract(r_in.diretion(), outward_normal, refIdx, 1.0f, refracted); // ç©ºæ°—ã®å±ˆæŠ˜ç‡ã‚’1ã¨ã™ã‚‹ã€‚
 		float a = dot(r_in.diretion(), rec.normal) * refIdx;
 		float b = r_in.diretion().length();
-		cosine = a / b;						// ray‚Ì•ûŒüƒxƒNƒgƒ‹‚Í³‹K‰»‚³‚ê‚Ä‚¢‚È‚¢‚Ì‚ÅA‚»‚Ì‘å‚«‚³‚ÅŠ„‚é
+		cosine = a / b;						// rayã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã¯æ­£è¦åŒ–ã•ã‚Œã¦ã„ãªã„ã®ã§ã€ãã®å¤§ãã•ã§å‰²ã‚‹
 	}
 	else
 	{
-		// ray‚ª‹ó‹C’†‚©‚ç•¨‘Ì“à•”‚ÖŒü‚©‚Á‚Ä‚¢‚é
+		// rayãŒç©ºæ°—ä¸­ã‹ã‚‰ç‰©ä½“å†…éƒ¨ã¸å‘ã‹ã£ã¦ã„ã‚‹
 		outward_normal = rec.normal;
-		isRefracted = refract(r_in.diretion(), outward_normal, 1.0f, refIdx,  refracted); // ‹ó‹C‚Ì‹üÜ—¦‚ğ1‚Æ‚·‚éB
+		isRefracted = refract(r_in.diretion(), outward_normal, 1.0f, refIdx,  refracted); // ç©ºæ°—ã®å±ˆæŠ˜ç‡ã‚’1ã¨ã™ã‚‹ã€‚
 		float a = dot(r_in.diretion(), rec.normal) * refIdx;
 		float b = r_in.diretion().length();
-		cosine = - a / b;						// ray‚Ì•ûŒüƒxƒNƒgƒ‹‚Í³‹K‰»‚³‚ê‚Ä‚¢‚È‚¢‚Ì‚ÅA‚»‚Ì‘å‚«‚³‚ÅŠ„‚é
+		cosine = - a / b;						// rayã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã¯æ­£è¦åŒ–ã•ã‚Œã¦ã„ãªã„ã®ã§ã€ãã®å¤§ãã•ã§å‰²ã‚‹
 	}
 
 	if (isRefracted)
@@ -53,15 +53,15 @@ bool Dielectric::scatter(const ray& r_in, const HitRecord& rec, vec3& attenuatio
 		reflectProbability = 1.0f;
 	}
 
-	// ˆê•”‚ÌŒõü‚ª”½Ë‚·‚é‚±‚Æ‚ğÄŒ»‚·‚é‚½‚ß‚ÉAreflection coefficint ‚ğ”½Ë‰Â”\«‚Æ‚µ‚ÄA”½Ë‚Ü‚½‚Í‹üÜŒõüƒxƒNƒgƒ‹‚ğŒvZ‚·‚é
+	// ä¸€éƒ¨ã®å…‰ç·šãŒåå°„ã™ã‚‹ã“ã¨ã‚’å†ç¾ã™ã‚‹ãŸã‚ã«ã€reflection coefficint ã‚’åå°„å¯èƒ½æ€§ã¨ã—ã¦ã€åå°„ã¾ãŸã¯å±ˆæŠ˜å…‰ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ã™ã‚‹
 	if (RandomUtil::getRandom0to1() < reflectProbability)
 	{
-		// ”½Ë‚µ‚½
+		// åå°„ã—ãŸ
 		scattered = ray{ rec.hitPoint, reflected, r_in.time() };
 	}
 	else
 	{
-		// ‹üÜ‚µ‚½
+		// å±ˆæŠ˜ã—ãŸ
 		scattered = ray{ rec.hitPoint, refracted, r_in.time() };
 	}
 	return true;

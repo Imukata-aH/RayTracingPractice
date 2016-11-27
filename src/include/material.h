@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "vec3.h"
 
@@ -15,7 +15,7 @@ protected:
 		return v - 2 * dot(v, n) * n;
 	}
 
-	// ni: “üËŒ³‹üÜ—¦ nt: “üËæ‹üÜ—¦
+	// ni: å…¥å°„å…ƒå±ˆæŠ˜ç‡ nt: å…¥å°„å…ˆå±ˆæŠ˜ç‡
 	bool refract(const vec3& v, const vec3& n, float ni, float nt, vec3& refracted) const
 	{
 		float niOverNt{ ni / nt };
@@ -24,13 +24,13 @@ protected:
 		float discriminant{ 1.0f - niOverNt*niOverNt*(1 - dt*dt) };
 		if (discriminant > 0) 
 		{
-			// ‹üÜ‚µ‚½
+			// å±ˆæŠ˜ã—ãŸ
 			refracted = niOverNt*(uv - n*dt) - n * sqrt(discriminant);
 			return true;
 		}
 		else
 		{
-			// ‘S”½Ë
+			// å…¨åå°„
 			return false;
 		}
 	}

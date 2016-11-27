@@ -1,4 +1,4 @@
-#include "hitable_list.h"
+﻿#include "hitable_list.h"
 #include "aabb.h"
 
 bool HitableList::hit(const ray& r, float tMin, float tMax, HitRecord& rec) const
@@ -40,7 +40,7 @@ bool HitableList::boundingBox(float t0, float t1, AABB& box) const
 		box = tempBox;
 	}
 
-	for (int i = 1; i < listSize; i++)
+	for (size_t i = 1; i < listSize; i++)
 	{
 		if ((*list)[i]->boundingBox(t0, t1, tempBox))
 		{

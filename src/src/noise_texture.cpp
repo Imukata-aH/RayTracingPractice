@@ -1,4 +1,4 @@
-#include "noise_texture.h"
+﻿#include "noise_texture.h"
 #include "vec3.h"
 
 NoiseTexture::NoiseTexture() : scale{1.0f}

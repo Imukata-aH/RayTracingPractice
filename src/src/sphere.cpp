@@ -1,23 +1,23 @@
-#include "sphere.h"
+ï»¿#include "sphere.h"
 #include "ray.h"
 #include "aabb.h"
 
 bool Sphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) const
 {
-	// ray‚Æsphere‚ÌŒğ“_‚ğ‹‚ß‚é•û’ö®‚Ì‰ğ‚ÌŒÂ”‚©‚çAƒqƒbƒg‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ”»’è
+	// rayã¨sphereã®äº¤ç‚¹ã‚’æ±‚ã‚ã‚‹æ–¹ç¨‹å¼ã®è§£ã®å€‹æ•°ã‹ã‚‰ã€ãƒ’ãƒƒãƒˆã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®š
 	vec3 co = r.origin() - center;
 	float a = dot(r.diretion(), r.diretion());
 	float b = dot(co, r.diretion());
 	float c = dot(co, co) - radius * radius;
 	float discriminant = b * b - a * c;
 
-	if (discriminant < 0) // “–‚½‚Á‚Ä‚È‚¢
+	if (discriminant < 0) // å½“ãŸã£ã¦ãªã„
 	{
 		return false;
 	}
-	else				  // “–‚½‚Á‚½
+	else				  // å½“ãŸã£ãŸ
 	{
-		float hitPointParam = (-b - sqrt(discriminant)) / a;	// ‹ß‚¢•û‚ÌŒğ“_‚Ìƒpƒ‰ƒ[ƒ^i¬‚³‚¢•û‚Ì‰ğj
+		float hitPointParam = (-b - sqrt(discriminant)) / a;	// è¿‘ã„æ–¹ã®äº¤ç‚¹ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼ˆå°ã•ã„æ–¹ã®è§£ï¼‰
 		if (hitPointParam > tMin && hitPointParam < tMax)
 		{
 			rec.t = hitPointParam;
@@ -27,7 +27,7 @@ bool Sphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) const
 			return true;
 		}
 
-		hitPointParam = (-b + sqrt(discriminant)) / a;			// ‰“‚¢•û‚ÌŒğ“_‚Ìƒpƒ‰ƒ[ƒ^i‘å‚«‚¢•û‚Ì‰ğj
+		hitPointParam = (-b + sqrt(discriminant)) / a;			// é ã„æ–¹ã®äº¤ç‚¹ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼ˆå¤§ãã„æ–¹ã®è§£ï¼‰
 		if (hitPointParam > tMin && hitPointParam < tMax)
 		{
 			rec.t = hitPointParam;

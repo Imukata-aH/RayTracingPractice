@@ -1,4 +1,4 @@
-#include "lambertian.h"
+ï»¿#include "lambertian.h"
 #include "hitable.h"
 #include "ray.h"
 #include "vec3.h"
@@ -13,7 +13,7 @@ Lambertian::Lambertian(Texture* t)
 
 bool Lambertian::scatter(const ray& r_in, const HitRecord& rec, vec3& attenuation, ray& scattered) const
 {
-	// ÚG“_‚ÉÚ‚·‚é’PˆÊ‹…‹…–Ê“à‚Ìƒ‰ƒ“ƒ_ƒ€‚È“_‚ðA”½ŽË•ûŒü‚Æ‚·‚é
+	// æŽ¥è§¦ç‚¹ã«æŽ¥ã™ã‚‹å˜ä½çƒçƒé¢å†…ã®ãƒ©ãƒ³ãƒ€ãƒ ãªç‚¹ã‚’ã€åå°„æ–¹å‘ã¨ã™ã‚‹
 	vec3 target = rec.hitPoint + rec.normal + RandomUtil::getrRandomPointInUnitSphere();
 	scattered = ray(rec.hitPoint, target - rec.hitPoint, r_in.time());
 	attenuation = albedo->value(0, 0, rec.hitPoint);

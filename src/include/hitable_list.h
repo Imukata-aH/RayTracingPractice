@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "hitable.h"
 #include <vector>
@@ -9,7 +9,7 @@ public:
 	HitableList(){}
 	HitableList(std::vector<Hitable*>*list) { this->list = list; }
 
-	// ƒqƒbƒg‚µ‚½ƒŠƒXƒg’†‚ÌHitable‚Ì“_A‚ÅÅ‚àƒJƒƒ‰‚É‹ß‚¢“_‚ğ‹L˜^‚·‚é
+	// ãƒ’ãƒƒãƒˆã—ãŸãƒªã‚¹ãƒˆä¸­ã®Hitableã®ç‚¹ã€ã§æœ€ã‚‚ã‚«ãƒ¡ãƒ©ã«è¿‘ã„ç‚¹ã‚’è¨˜éŒ²ã™ã‚‹
 	virtual bool hit(const ray& r, float tMin, float tMax, HitRecord& rec) const;
 
 	virtual bool boundingBox(float t0, float t1, AABB& box) const;

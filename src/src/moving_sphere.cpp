@@ -1,4 +1,4 @@
-#include "moving_sphere.h"
+ï»¿#include "moving_sphere.h"
 #include "ray.h"
 #include "aabb.h"
 
@@ -18,7 +18,7 @@ MovingSphere::MovingSphere(vec3 cent0, vec3 cent1, float t0, float t1, float r, 
 
 bool MovingSphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) const
 {
-	// ray‚Æsphere‚ÌŒğ“_‚ğ‹‚ß‚é•û’ö®‚Ì‰ğ‚ÌŒÂ”‚©‚çAƒqƒbƒg‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ”»’è
+	// rayã¨sphereã®äº¤ç‚¹ã‚’æ±‚ã‚ã‚‹æ–¹ç¨‹å¼ã®è§£ã®å€‹æ•°ã‹ã‚‰ã€ãƒ’ãƒƒãƒˆã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®š
 	vec3 currentCenter = center(r.time());
 	vec3 co = r.origin() - currentCenter;
 	float a = dot(r.diretion(), r.diretion());
@@ -26,13 +26,13 @@ bool MovingSphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) con
 	float c = dot(co, co) - radius * radius;
 	float discriminant = b * b - a * c;
 
-	if (discriminant < 0) // “–‚½‚Á‚Ä‚È‚¢
+	if (discriminant < 0) // å½“ãŸã£ã¦ãªã„
 	{
 		return false;
 	}
-	else				  // “–‚½‚Á‚½
+	else				  // å½“ãŸã£ãŸ
 	{
-		float hitPointParam = (-b - sqrt(discriminant)) / a;	// ‹ß‚¢•û‚ÌŒğ“_‚Ìƒpƒ‰ƒ[ƒ^i¬‚³‚¢•û‚Ì‰ğj
+		float hitPointParam = (-b - sqrt(discriminant)) / a;	// è¿‘ã„æ–¹ã®äº¤ç‚¹ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼ˆå°ã•ã„æ–¹ã®è§£ï¼‰
 		if (hitPointParam > tMin && hitPointParam < tMax)
 		{
 			rec.t = hitPointParam;
@@ -42,7 +42,7 @@ bool MovingSphere::hit(const ray& r, float tMin, float tMax, HitRecord& rec) con
 			return true;
 		}
 
-		hitPointParam = (-b + sqrt(discriminant)) / a;			// ‰“‚¢•û‚ÌŒğ“_‚Ìƒpƒ‰ƒ[ƒ^i‘å‚«‚¢•û‚Ì‰ğj
+		hitPointParam = (-b + sqrt(discriminant)) / a;			// é ã„æ–¹ã®äº¤ç‚¹ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼ˆå¤§ãã„æ–¹ã®è§£ï¼‰
 		if (hitPointParam > tMin && hitPointParam < tMax)
 		{
 			rec.t = hitPointParam;
