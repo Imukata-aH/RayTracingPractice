@@ -23,6 +23,10 @@
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\dielectric.cpp" />
     <ClCompile Include="src\hitable_list.cpp" />
+    <ClCompile Include="src\image_texture.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="src\labertian.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\metal.cpp" />
@@ -41,6 +45,10 @@
     <ClInclude Include="include\dielectric.h" />
     <ClInclude Include="include\hitable.h" />
     <ClInclude Include="include\hitable_list.h" />
+    <ClInclude Include="include\image_texture.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\lambertian.h" />
     <ClInclude Include="include\material.h" />
     <ClInclude Include="include\metal.h" />
@@ -50,6 +58,7 @@
     <ClInclude Include="include\random_util.h" />
     <ClInclude Include="include\ray.h" />
     <ClInclude Include="include\sphere.h" />
+    <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\vec3.h" />
   </ItemGroup>
