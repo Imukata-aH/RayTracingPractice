@@ -18,6 +18,10 @@
 #include "checker_texture.h"
 #include "bvh_node.h"
 #include "noise_texture.h"
+#include "image_texture.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 namespace
 {
@@ -59,6 +63,27 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 	{
 		return new MovingSphere(center, center + vec3{ 0.0f, 0.5f * RandomUtil::getRandom0to1(), 0.0f }, 0.0f, 1.0f, radius, mat);
 	}
+}
+
+Hitable* makeSceneImageTextureSphere(const char* imageFileName)
+{
+	int w, h, nn;
+	unsigned char* texData{ stbi_load(imageFileName, &w, &h, &nn, 0) };
+	material* mat = new Lambertian(new ImageTexture(texData, w, h));
+	//Texture* noiseTexture = new NoiseTexture();
+	//material* mat = new Lambertian(noiseTexture);
+	Sphere* imageSphere{ new Sphere(vec3{0.0f, 0.0f, 0.0f}, 2.0f, mat) };
+	return imageSphere;
+}
+
+Camera getCameraImageTextureSphere(int nx, int ny)
+{
+	vec3 lookFrom{ 0.0f, 0.0f, 13.0f };
+	vec3 lookAt{ 0.0f, 0.0f, 0.0f };
+	float distToFocus = (lookFrom - lookAt).length();
+	float aperture = 0.05f;
+	Camera camera{ lookFrom, lookAt, vec3{ 0.0f, 1.0f, 0.0f }, 20.0f, float(nx) / float(ny), aperture, distToFocus, 0.0f, 1.0f };
+	return camera;
 }
 
 Hitable* makeTwoPerlinSphereScene()
@@ -171,8 +196,8 @@ int main(int argc, char** argv)
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDRにも対応できるようJXRで保存したい
 
-	int nx{ 800 };
-	int ny{ 600 };
+	int nx{ 300 };
+	int ny{ 200 };
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -182,8 +207,11 @@ int main(int argc, char** argv)
 	/*camera = getCameraForRandomSphereScene(nx, ny);
 	world = makeRandomSphereScene();*/
 
-	camera = getCameraForTwoPerlinSphereScene(nx, ny);
-	world = makeTwoPerlinSphereScene();
+	/*camera = getCameraForTwoPerlinSphereScene(nx, ny);
+	world = makeTwoPerlinSphereScene();*/
+
+	camera = getCameraImageTextureSphere(nx, ny);
+	world = makeSceneImageTextureSphere("./texture_images/earthmap.jpg");
 
 	const float inv_gamma{ 1 / gamma };
 	for (int j = ny - 1; j >= 0; j--)
