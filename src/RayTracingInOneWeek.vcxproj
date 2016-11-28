@@ -44,6 +44,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="src\xz_rect.cpp" />
+    <ClCompile Include="src\yz_rect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\aabb.h" />
@@ -79,6 +80,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="include\xz_rect.h" />
+    <ClInclude Include="include\yz_rect.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3E6B4824-CB16-4D13-9D3B-301E8F4BC5AD}</ProjectGuid>
