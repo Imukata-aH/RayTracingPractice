@@ -76,7 +76,7 @@ Hitable* makeSceneSimpleLight()
 	(*list)[0] = new Sphere{ vec3{0.0f, -1000.001f, 0.0f}, 1000.0f, new Lambertian{noiseTexture} };
 	(*list)[1] = new Sphere{ vec3{0.0f, 2.0f, 0.0f}, 2.0f, new Lambertian{noiseTexture} };
 	(*list)[2] = new Sphere{ vec3{0.0f, 9.0f, 0.0f}, 2.0f, new DiffuseLight{new ConstantTexture{vec3 {4.0f, 4.0f, 4.0f}}} };
-	(*list)[3] = new XyRect{ -1.0f, 1.0f, 1.0f, 3.0f, -3.0f, new DiffuseLight{ new ConstantTexture{ vec3{ 4.0f, 4.0f, 4.0f } } } };
+	(*list)[3] = new XyRect{ -3.0f, 3.0f, 1.0f, 3.0f, -3.0f, new DiffuseLight{ new ConstantTexture{ vec3{ 4.0f, 4.0f, 4.0f } } } };
 	return new HitableList{ list };
 }
 
