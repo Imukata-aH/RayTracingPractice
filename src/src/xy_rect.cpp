@@ -10,6 +10,7 @@ XyRect::XyRect(float _x0, float _x1, float _y0, float _y1, float _k, material * 
 	x1{ _x1 },
 	y0{ _y0 },
 	y1{ _y1 },
+	k{ _k },
 	mat{ _mat }
 {
 }
@@ -17,7 +18,7 @@ XyRect::XyRect(float _x0, float _x1, float _y0, float _y1, float _k, material * 
 bool XyRect::hit(const ray & r, float tMin, float tMax, HitRecord & rec) const
 {
 	// calculate t when the ray hits the plane on the reclangle
-	float t{ k - r.origin().z() / r.diretion().z() };
+	float t{ (k - r.origin().z()) / r.diretion().z() };
 	if (t< tMin || t>tMax)
 		return false;
 	// evaluate the hit point is in the rectangle
