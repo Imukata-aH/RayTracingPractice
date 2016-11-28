@@ -22,6 +22,10 @@
     <ClCompile Include="src\bvh_node.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\dielectric.cpp" />
+    <ClCompile Include="src\diffuse_light.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="src\hitable_list.cpp" />
     <ClCompile Include="src\image_texture.cpp">
       <SubType>
@@ -35,6 +39,10 @@
     <ClCompile Include="src\perlin.cpp" />
     <ClCompile Include="src\random_util.cpp" />
     <ClCompile Include="src\sphere.cpp" />
+    <ClCompile Include="src\xy_rect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\aabb.h" />
@@ -43,6 +51,10 @@
     <ClInclude Include="include\checker_texture.h" />
     <ClInclude Include="include\constant_texture.h" />
     <ClInclude Include="include\dielectric.h" />
+    <ClInclude Include="include\diffuse_light.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\hitable.h" />
     <ClInclude Include="include\hitable_list.h" />
     <ClInclude Include="include\image_texture.h">
@@ -61,6 +73,10 @@
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\vec3.h" />
+    <ClInclude Include="include\xy_rect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3E6B4824-CB16-4D13-9D3B-301E8F4BC5AD}</ProjectGuid>

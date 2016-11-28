@@ -19,6 +19,8 @@
 #include "bvh_node.h"
 #include "noise_texture.h"
 #include "image_texture.h"
+#include "xy_rect.h"
+#include "diffuse_light.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -37,11 +39,11 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 	material* mat{ nullptr };
 	if (chooseMat < 0.8f)
 	{
-		mat = new Lambertian{ new ConstantTexture(vec3{ 
-			RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), 
-			RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(), 
-			RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1() } 
-		)};
+		mat = new Lambertian{ new ConstantTexture(vec3{
+			RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(),
+			RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1(),
+			RandomUtil::getRandom0to1() * RandomUtil::getRandom0to1() }
+		) };
 	}
 	else if (chooseMat < 0.9f)
 	{
@@ -54,7 +56,7 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 	{
 		mat = new Dielectric{ 1.5f };
 	}
-	
+
 	if (chooseObj < 0.7f)
 	{
 		return new Sphere(center, radius, mat);
@@ -63,6 +65,27 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 	{
 		return new MovingSphere(center, center + vec3{ 0.0f, 0.5f * RandomUtil::getRandom0to1(), 0.0f }, 0.0f, 1.0f, radius, mat);
 	}
+}
+
+Hitable* makeSceneSimpleLight()
+{
+	Texture* noiseTexture{ new NoiseTexture(4) };
+	std::vector<Hitable*>* list{ new std::vector<Hitable*>(4) };
+	(*list)[0] = new Sphere{ vec3{0.0f, -1000.001f, 0.0f}, 1000.0f, new Lambertian{noiseTexture} };
+	(*list)[1] = new Sphere{ vec3{0.0f, 2.0f, 0.0f}, 2.0f, new Lambertian{noiseTexture} };
+	(*list)[2] = new Sphere{ vec3{0.0f, 9.0f, 0.0f}, 2.0f, new DiffuseLight{new ConstantTexture{vec3 {4.0f, 4.0f, 4.0f}}} };
+	(*list)[3] = new XyRect{ -1.0f, 1.0f, 1.0f, 3.0f, -3.0f, new DiffuseLight{ new ConstantTexture{ vec3{ 4.0f, 4.0f, 4.0f } } } };
+	return new HitableList{ list };
+}
+
+Camera getCameraForSimpleLightScene(int nx, int ny)
+{
+	vec3 lookFrom{ 0.0f, 5.0f, 25.0f };
+	vec3 lookAt{ 0.0f, 2.5f, 0.0f };
+	float distToFocus = (lookFrom - lookAt).length();
+	float aperture = 0.1f;
+	Camera camera{ lookFrom, lookAt, vec3{ 0.0f, 1.0f, 0.0f }, 20.0f, float(nx) / float(ny), aperture, distToFocus, 0.0f, 1.0f };
+	return camera;
 }
 
 Hitable* makeSceneImageTextureSphere(const char* imageFileName)
@@ -107,12 +130,12 @@ Hitable* makeRandomSphereScene()
 {
 	int sphereNum = 500;
 	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
-	(*list).push_back(new Sphere{ 
-		vec3{0.0f, -2000.0f, 0.0f}, 
-		2000.0f, 
+	(*list).push_back(new Sphere{
+		vec3{0.0f, -2000.0f, 0.0f},
+		2000.0f,
 		new Lambertian{
 			new CheckerTexture{new ConstantTexture{vec3{0.1f, 0.3f, 0.5f}}, new ConstantTexture{vec3{0.9f, 0.9f, 0.9f}}}
-		} 
+		}
 	});	// ground
 	int i = 1;
 	for (int a = -11; a < 11; a++)
@@ -130,17 +153,17 @@ Hitable* makeRandomSphereScene()
 		}
 	}
 
-	(*list).push_back(new Sphere{ 
-		vec3{0.0f, 1.0f, 0.0f}, 
-		1.0f, 
-		new Dielectric{1.5f} 
+	(*list).push_back(new Sphere{
+		vec3{0.0f, 1.0f, 0.0f},
+		1.0f,
+		new Dielectric{1.5f}
 	});
-	(*list).push_back(new Sphere{ 
-		vec3{-4.0f, 1.0f, 0.0f}, 
-		1.0f, 
-		new Lambertian{new ConstantTexture(vec3{0.1f, 0.4f, 0.7f})} 
+	(*list).push_back(new Sphere{
+		vec3{-4.0f, 1.0f, 0.0f},
+		1.0f,
+		new Lambertian{new ConstantTexture(vec3{0.1f, 0.4f, 0.7f})}
 	});
-	(*list).push_back(new Sphere{ 
+	(*list).push_back(new Sphere{
 		vec3{4.0f, 1.0f, 0.0f},
 		1.0f,
 		new Metal{vec3{0.7f, 0.6f, 0.5f}, 0.0f}
@@ -192,8 +215,8 @@ int main(int argc, char** argv)
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDRにも対応できるようJXRで保存したい
 
-	int nx{ 300 };
-	int ny{ 200 };
+	int nx{ 800 };
+	int ny{ 600 };
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -206,8 +229,11 @@ int main(int argc, char** argv)
 	/*camera = getCameraForTwoPerlinSphereScene(nx, ny);
 	world = makeTwoPerlinSphereScene();*/
 
-	camera = getCameraImageTextureSphere(nx, ny);
-	world = makeSceneImageTextureSphere("./texture_images/earthmap.jpg");
+	/*camera = getCameraImageTextureSphere(nx, ny);
+	world = makeSceneImageTextureSphere("./texture_images/earthmap.jpg");*/
+
+	camera = getCameraForSimpleLightScene(nx, ny);
+	world = makeSceneSimpleLight();
 
 	const float inv_gamma{ 1 / gamma };
 	for (int j = ny - 1; j >= 0; j--)

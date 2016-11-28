@@ -14,6 +14,8 @@
     <ClCompile Include="src\random_util.cpp" />
     <ClCompile Include="src\sphere.cpp" />
     <ClCompile Include="src\image_texture.cpp" />
+    <ClCompile Include="src\diffuse_light.cpp" />
+    <ClCompile Include="src\xy_rect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\aabb.h" />
@@ -37,5 +39,7 @@
     <ClInclude Include="include\vec3.h" />
     <ClInclude Include="include\image_texture.h" />
     <ClInclude Include="include\stb_image.h" />
+    <ClInclude Include="include\diffuse_light.h" />
+    <ClInclude Include="include\xy_rect.h" />
   </ItemGroup>
 </Project>
