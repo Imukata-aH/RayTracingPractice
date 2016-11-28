@@ -10,6 +10,7 @@ YzRect::YzRect(float _y0, float _y1, float _z0, float _z1, float _k, material * 
 	y1{ _y1 },
 	z0{ _z0 },
 	z1{ _z1 },
+	k{ _k },
 	mat{ _mat }
 {
 }
@@ -17,7 +18,7 @@ YzRect::YzRect(float _y0, float _y1, float _z0, float _z1, float _k, material * 
 bool YzRect::hit(const ray & r, float tMin, float tMax, HitRecord & rec) const
 {
 	// calculate t when the ray hits the plane on the reclangle
-	float t{ k - r.origin().z() / r.diretion().z() };
+	float t{ (k - r.origin().x()) / r.diretion().x() };
 	if (t< tMin || t>tMax)
 		return false;
 	// evaluate the hit point is in the rectangle
@@ -32,7 +33,7 @@ bool YzRect::hit(const ray & r, float tMin, float tMax, HitRecord & rec) const
 	rec.t = t;
 	rec.material = mat;
 	rec.hitPoint = r.point_at_parameter(t);
-	rec.normal = vec3{ 0.0f,0.0f,1.0f };
+	rec.normal = vec3{ 1.0f,0.0f,0.0f };
 	return true;
 }
 
