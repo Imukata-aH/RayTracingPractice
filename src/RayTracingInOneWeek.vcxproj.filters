@@ -16,6 +16,7 @@
     <ClCompile Include="src\image_texture.cpp" />
     <ClCompile Include="src\diffuse_light.cpp" />
     <ClCompile Include="src\xy_rect.cpp" />
+    <ClCompile Include="src\xz_rect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\aabb.h" />
@@ -41,5 +42,6 @@
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\diffuse_light.h" />
     <ClInclude Include="include\xy_rect.h" />
+    <ClInclude Include="include\xz_rect.h" />
   </ItemGroup>
 </Project>

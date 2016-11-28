@@ -20,6 +20,7 @@
 #include "noise_texture.h"
 #include "image_texture.h"
 #include "xy_rect.h"
+#include "xz_rect.h"
 #include "diffuse_light.h"
 
 #define STB_IMAGE_IMPLEMENTATION
