@@ -24,6 +24,7 @@
 #include "yz_rect.h"
 #include "diffuse_light.h"
 #include "flip_normals.h"
+#include "box.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -72,19 +73,21 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 
 Hitable* makeSceneCornellBox()
 {
-	std::vector<Hitable*>* list{ new std::vector<Hitable*>(6) };
+	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
 	int i{ 0 };
 	material* red = new Lambertian{ new ConstantTexture{vec3{0.65f, 0.05f, 0.05f}} };
 	material* white = new Lambertian{ new ConstantTexture{ vec3{ 0.73f, 0.73f, 0.73f } } };
 	material* green = new Lambertian{ new ConstantTexture{ vec3{ 0.12f, 0.45f, 0.15f } } };
 	material* light = new DiffuseLight{ new ConstantTexture{ vec3{ 15.0f, 15.0f, 15.0f } } };
 
-	(*list)[i++] = new FlipNormals{ new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, green } };	// left wall
-	(*list)[i++] = new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, red };							// right wall
-	(*list)[i++] = new XzRect{ 213.0f, 343.0f, 227.0f, 332.0f, 554.0f, light };					// ceiling light
-	(*list)[i++] = new FlipNormals{ new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } };	// ceiling
-	(*list)[i++] = new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, white };						// floor
-	(*list)[i++] = new FlipNormals{ new XyRect{0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } };	// back wall
+	(*list).push_back( new FlipNormals{ new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, green } });	// left wall
+	(*list).push_back( new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, red });						// right wall
+	(*list).push_back( new XzRect{ 213.0f, 343.0f, 227.0f, 332.0f, 554.0f, light });					// ceiling light
+	(*list).push_back( new FlipNormals{ new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// ceiling
+	(*list).push_back( new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, white });						// floor
+	(*list).push_back( new FlipNormals{ new XyRect{0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// back wall
+	(*list).push_back( new Box{ vec3{130.0f, 0.0f, 65.0f}, vec3{295.0f, 165.0f, 230.0f}, white });	// box1
+	(*list).push_back( new Box{ vec3{265.0f, 0.0f, 295.0f}, vec3{430.0f, 330.0f, 460.0f}, white });		// box2
 	return new HitableList{ list };
 }
 
