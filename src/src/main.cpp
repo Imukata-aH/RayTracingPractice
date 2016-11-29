@@ -26,6 +26,7 @@
 #include "flip_normals.h"
 #include "box.h"
 #include "translate.h"
+#include "rotate_y.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -75,7 +76,7 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 Hitable* makeSceneCornellBox()
 {
 	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
-	int i{ 0 };
+
 	material* red = new Lambertian{ new ConstantTexture{vec3{0.65f, 0.05f, 0.05f}} };
 	material* white = new Lambertian{ new ConstantTexture{ vec3{ 0.73f, 0.73f, 0.73f } } };
 	material* green = new Lambertian{ new ConstantTexture{ vec3{ 0.12f, 0.45f, 0.15f } } };
@@ -87,8 +88,8 @@ Hitable* makeSceneCornellBox()
 	(*list).push_back( new FlipNormals{ new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// ceiling
 	(*list).push_back( new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, white });						// floor
 	(*list).push_back( new FlipNormals{ new XyRect{0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// back wall
-	(*list).push_back( new Box{ vec3{130.0f, 0.0f, 65.0f}, vec3{295.0f, 165.0f, 230.0f}, white });	// box1
-	(*list).push_back(new Translate{ new Box{ vec3{265.0f, 0.0f, 295.0f}, vec3{430.0f, 330.0f, 460.0f}, white }, vec3{ -200.0f, 100.0f, 0.0f } });		// box2
+	(*list).push_back(new Translate{ new RotateY{ new Box{ vec3{ 0.0f, 0.0f, 0.0f }, vec3{ 160.0f, 165.0f, 165.0f }, white }, -18.0f }, vec3{ 130.0f, 0.0f, 65.0f } });	// box1
+	(*list).push_back(new Translate{ new RotateY{ new Box{ vec3{0.0f, 0.0f, 0.0f}, vec3{160.0f, 330.0f, 165.0f}, white }, 15.0f}, vec3{ 265.0f, 0.0f, 290.0f } });		// box2
 	return new HitableList{ list };
 }
 
@@ -251,7 +252,7 @@ int main(int argc, char** argv)
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDRにも対応できるようJXRで保存したい
 
-	int nx{ 800 };
+	int nx{ 600 };
 	int ny{ 600 };
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
