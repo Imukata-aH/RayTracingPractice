@@ -19,6 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\box.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="src\bvh_node.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\dielectric.cpp" />
@@ -38,8 +42,16 @@
     <ClCompile Include="src\noise_texture.cpp" />
     <ClCompile Include="src\perlin.cpp" />
     <ClCompile Include="src\random_util.cpp" />
+    <ClCompile Include="src\rotate_y.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="src\sphere.cpp" />
     <ClCompile Include="src\flip_normals.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="src\translate.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -52,6 +64,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\aabb.h" />
+    <ClInclude Include="include\box.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\bvh_node.h" />
     <ClInclude Include="include\camera.h" />
     <ClInclude Include="include\checker_texture.h" />
@@ -76,9 +92,17 @@
     <ClInclude Include="include\perlin.h" />
     <ClInclude Include="include\random_util.h" />
     <ClInclude Include="include\ray.h" />
+    <ClInclude Include="include\rotate_y.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\sphere.h" />
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\texture.h" />
+    <ClInclude Include="include\translate.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\vec3.h" />
     <ClInclude Include="include\xy_rect.h">
       <SubType>

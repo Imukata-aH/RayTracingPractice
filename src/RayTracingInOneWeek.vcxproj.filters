@@ -19,6 +19,9 @@
     <ClCompile Include="src\xz_rect.cpp" />
     <ClCompile Include="src\yz_rect.cpp" />
     <ClCompile Include="src\flip_normals.cpp" />
+    <ClCompile Include="src\box.cpp" />
+    <ClCompile Include="src\translate.cpp" />
+    <ClCompile Include="src\rotate_y.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\aabb.h" />
@@ -47,5 +50,8 @@
     <ClInclude Include="include\xz_rect.h" />
     <ClInclude Include="include\yz_rect.h" />
     <ClInclude Include="include\flip_normals.h" />
+    <ClInclude Include="include\box.h" />
+    <ClInclude Include="include\translate.h" />
+    <ClInclude Include="include\rotate_y.h" />
   </ItemGroup>
 </Project>
