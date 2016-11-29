@@ -25,6 +25,7 @@
 #include "diffuse_light.h"
 #include "flip_normals.h"
 #include "box.h"
+#include "translate.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -82,12 +83,12 @@ Hitable* makeSceneCornellBox()
 
 	(*list).push_back( new FlipNormals{ new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, green } });	// left wall
 	(*list).push_back( new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, red });						// right wall
-	(*list).push_back( new XzRect{ 213.0f, 343.0f, 227.0f, 332.0f, 554.0f, light });					// ceiling light
+	(*list).push_back( new XzRect{ 213.0f, 343.0f, 227.0f, 332.0f, 554.0f, light });				// ceiling light
 	(*list).push_back( new FlipNormals{ new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// ceiling
 	(*list).push_back( new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, white });						// floor
 	(*list).push_back( new FlipNormals{ new XyRect{0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// back wall
 	(*list).push_back( new Box{ vec3{130.0f, 0.0f, 65.0f}, vec3{295.0f, 165.0f, 230.0f}, white });	// box1
-	(*list).push_back( new Box{ vec3{265.0f, 0.0f, 295.0f}, vec3{430.0f, 330.0f, 460.0f}, white });		// box2
+	(*list).push_back(new Translate{ new Box{ vec3{265.0f, 0.0f, 295.0f}, vec3{430.0f, 330.0f, 460.0f}, white }, vec3{ -200.0f, 100.0f, 0.0f } });		// box2
 	return new HitableList{ list };
 }
 
