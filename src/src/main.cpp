@@ -69,6 +69,34 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 	}
 }
 
+Hitable* makeSceneCornellBox()
+{
+	std::vector<Hitable*>* list{ new std::vector<Hitable*>(5) };
+	int i{ 0 };
+	material* red = new Lambertian{ new ConstantTexture{vec3{0.65f, 0.05f, 0.05f}} };
+	material* white = new Lambertian{ new ConstantTexture{ vec3{ 0.73f, 0.73f, 0.73f } } };
+	material* green = new Lambertian{ new ConstantTexture{ vec3{ 0.12f, 0.45f, 0.15f } } };
+	material* light = new DiffuseLight{ new ConstantTexture{ vec3{ 15.0f, 15.0f, 15.0f } } };
+
+	(*list)[i++] = new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, green };
+	(*list)[i++] = new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, red };
+	(*list)[i++] = new XzRect{ 213.0f, 343.0f, 227.0f, 332.0f, 554.0f, light };
+	(*list)[i++] = new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f,0.0f, white };
+	(*list)[i++] = new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f,555.0f, white };
+	return new HitableList{ list };
+}
+
+Camera getCameraCornellBoxScene(int nx, int ny)
+{
+	vec3 lookFrom{ 278.0f, 278.0f, -800.0f };
+	vec3 lookAt{ 278.0f, 278.0f, 0.0f };
+	float distToFocus{ 10.0f };
+	float aperture{ 0.0f };
+	float vfov{ 40.0f };
+	Camera camera{ lookFrom, lookAt, vec3{ 0.0f, 1.0f, 0.0f }, vfov, float(nx) / float(ny), aperture, distToFocus, 0.0f, 1.0f };
+	return camera;
+}
+
 Hitable* makeSceneSimpleLight()
 {
 	Texture* noiseTexture{ new NoiseTexture(4) };
@@ -234,8 +262,11 @@ int main(int argc, char** argv)
 	/*camera = getCameraImageTextureSphere(nx, ny);
 	world = makeSceneImageTextureSphere("./texture_images/earthmap.jpg");*/
 
-	camera = getCameraForSimpleLightScene(nx, ny);
-	world = makeSceneSimpleLight();
+	/*camera = getCameraForSimpleLightScene(nx, ny);
+	world = makeSceneSimpleLight();*/
+
+	camera = getCameraCornellBoxScene(nx, ny);
+	world = makeSceneCornellBox();
 
 	const float inv_gamma{ 1 / gamma };
 	for (int j = ny - 1; j >= 0; j--)
