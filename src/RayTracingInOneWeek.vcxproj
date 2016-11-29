@@ -39,6 +39,10 @@
     <ClCompile Include="src\perlin.cpp" />
     <ClCompile Include="src\random_util.cpp" />
     <ClCompile Include="src\sphere.cpp" />
+    <ClCompile Include="src\flip_normals.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="src\xy_rect.cpp">
       <SubType>
       </SubType>
@@ -57,6 +61,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="include\flip_normals.h" />
     <ClInclude Include="include\hitable.h" />
     <ClInclude Include="include\hitable_list.h" />
     <ClInclude Include="include\image_texture.h">
