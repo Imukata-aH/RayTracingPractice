@@ -254,9 +254,10 @@ int main(int argc, char** argv)
 			color /= float(ns);
 
 			// ガンマ補正
-			color[0] = pow(color[0], inv_gamma);
+			/*color[0] = pow(color[0], inv_gamma);
 			color[1] = pow(color[1], inv_gamma);
-			color[2] = pow(color[2], inv_gamma);
+			color[2] = pow(color[2], inv_gamma);*/
+			color = vec3{ sqrt(color[0]), sqrt(color[1]), sqrt(color[2]) };
 
 			int ir = int(255.99*color[0]);
 			int ig = int(255.99*color[1]);
