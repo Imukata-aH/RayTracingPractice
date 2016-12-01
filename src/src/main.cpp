@@ -27,6 +27,7 @@
 #include "box.h"
 #include "translate.h"
 #include "rotate_y.h"
+#include "constant_medium.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -73,6 +74,29 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 	}
 }
 
+Hitable* makeSceneSmokeyCornell()
+{
+	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
+
+	material* red = new Lambertian{ new ConstantTexture{ vec3{ 0.65f, 0.05f, 0.05f } } };
+	material* white = new Lambertian{ new ConstantTexture{ vec3{ 0.73f, 0.73f, 0.73f } } };
+	material* green = new Lambertian{ new ConstantTexture{ vec3{ 0.12f, 0.45f, 0.15f } } };
+	material* light = new DiffuseLight{ new ConstantTexture{ vec3{ 7.0f, 7.0f, 7.0f } } };
+
+	(*list).push_back(new FlipNormals{ new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, green } });	// left wall
+	(*list).push_back(new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, red });						// right wall
+	(*list).push_back(new XzRect{ 113.0f, 443.0f, 127.0f, 432.0f, 554.0f, light });				// ceiling light
+	(*list).push_back(new FlipNormals{ new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// ceiling
+	(*list).push_back(new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, white });						// floor
+	(*list).push_back(new FlipNormals{ new XyRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// back wall
+
+	Hitable* box1 = new Translate{ new RotateY{ new Box{ vec3{ 0.0f, 0.0f, 0.0f }, vec3{ 160.0f, 165.0f, 165.0f }, white }, -18.0f }, vec3{ 130.0f, 0.0f, 65.0f } };
+	Hitable* box2 = new Translate{ new RotateY{ new Box{ vec3{ 0.0f, 0.0f, 0.0f }, vec3{ 160.0f, 330.0f, 165.0f }, white }, 15.0f }, vec3{ 265.0f, 0.0f, 290.0f } };
+	(*list).push_back(new ConstantMedium{ box1, 0.01f , new ConstantTexture{ vec3{ 1.0f, 1.0f, 1.0f } } });			// box1
+	(*list).push_back(new ConstantMedium{ box2, 0.01f , new ConstantTexture{ vec3{ 0.0f, 0.0f, 0.0f } } });		// box2
+	return new HitableList{ list };
+}
+
 Hitable* makeSceneCornellBox()
 {
 	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
@@ -82,12 +106,12 @@ Hitable* makeSceneCornellBox()
 	material* green = new Lambertian{ new ConstantTexture{ vec3{ 0.12f, 0.45f, 0.15f } } };
 	material* light = new DiffuseLight{ new ConstantTexture{ vec3{ 15.0f, 15.0f, 15.0f } } };
 
-	(*list).push_back( new FlipNormals{ new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, green } });	// left wall
-	(*list).push_back( new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, red });						// right wall
-	(*list).push_back( new XzRect{ 213.0f, 343.0f, 227.0f, 332.0f, 554.0f, light });				// ceiling light
-	(*list).push_back( new FlipNormals{ new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// ceiling
-	(*list).push_back( new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, white });						// floor
-	(*list).push_back( new FlipNormals{ new XyRect{0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// back wall
+	(*list).push_back(new FlipNormals{ new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, green } });	// left wall
+	(*list).push_back(new YzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, red });						// right wall
+	(*list).push_back(new XzRect{ 213.0f, 343.0f, 227.0f, 332.0f, 554.0f, light });				// ceiling light
+	(*list).push_back(new FlipNormals{ new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// ceiling
+	(*list).push_back(new XzRect{ 0.0f, 555.0f, 0.0f, 555.0f, 0.0f, white });						// floor
+	(*list).push_back(new FlipNormals{ new XyRect{0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white } });	// back wall
 	(*list).push_back(new Translate{ new RotateY{ new Box{ vec3{ 0.0f, 0.0f, 0.0f }, vec3{ 160.0f, 165.0f, 165.0f }, white }, -18.0f }, vec3{ 130.0f, 0.0f, 65.0f } });	// box1
 	(*list).push_back(new Translate{ new RotateY{ new Box{ vec3{0.0f, 0.0f, 0.0f}, vec3{160.0f, 330.0f, 165.0f}, white }, 15.0f}, vec3{ 265.0f, 0.0f, 290.0f } });		// box2
 	return new HitableList{ list };
@@ -273,7 +297,8 @@ int main(int argc, char** argv)
 	world = makeSceneSimpleLight();*/
 
 	camera = getCameraCornellBoxScene(nx, ny);
-	world = makeSceneCornellBox();
+	//world = makeSceneCornellBox();
+	world = makeSceneSmokeyCornell();
 
 	const float inv_gamma{ 1 / gamma };
 	for (int j = ny - 1; j >= 0; j--)
@@ -291,15 +316,21 @@ int main(int argc, char** argv)
 			}
 			color /= float(ns);
 
-			// ガンマ補正
-			/*color[0] = pow(color[0], inv_gamma);
-			color[1] = pow(color[1], inv_gamma);
-			color[2] = pow(color[2], inv_gamma);*/
-			color = vec3{ sqrt(color[0]), sqrt(color[1]), sqrt(color[2]) };
+			if (color[0] > 1.0f)
+				color[0] = 1.0f;
+			if (color[1] > 1.0f)
+				color[1] = 1.0f;
+			if (color[2] > 1.0f)
+				color[2] = 1.0f;
 
-			int ir = int(255.99*color[0]);
-			int ig = int(255.99*color[1]);
-			int ib = int(255.99*color[2]);
+			// ガンマ補正
+			color[0] = pow(color[0], inv_gamma);
+			color[1] = pow(color[1], inv_gamma);
+			color[2] = pow(color[2], inv_gamma);
+
+			int ir = int(255.5*color[0]);
+			int ig = int(255.5*color[1]);
+			int ib = int(255.5*color[2]);
 			outputFile << ir << " " << ig << " " << ib << "\n";
 		}
 	}

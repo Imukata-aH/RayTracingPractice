@@ -22,6 +22,7 @@
     <ClCompile Include="src\box.cpp" />
     <ClCompile Include="src\translate.cpp" />
     <ClCompile Include="src\rotate_y.cpp" />
+    <ClCompile Include="src\constant_medium.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\aabb.h" />
@@ -53,5 +54,7 @@
     <ClInclude Include="include\box.h" />
     <ClInclude Include="include\translate.h" />
     <ClInclude Include="include\rotate_y.h" />
+    <ClInclude Include="include\constant_medium.h" />
+    <ClInclude Include="include\isotropic.h" />
   </ItemGroup>
 </Project>
