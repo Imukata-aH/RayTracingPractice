@@ -25,6 +25,10 @@
     </ClCompile>
     <ClCompile Include="src\bvh_node.cpp" />
     <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\constant_medium.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="src\dielectric.cpp" />
     <ClCompile Include="src\diffuse_light.cpp">
       <SubType>
@@ -71,6 +75,10 @@
     <ClInclude Include="include\bvh_node.h" />
     <ClInclude Include="include\camera.h" />
     <ClInclude Include="include\checker_texture.h" />
+    <ClInclude Include="include\constant_medium.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\constant_texture.h" />
     <ClInclude Include="include\dielectric.h" />
     <ClInclude Include="include\diffuse_light.h">
@@ -100,6 +108,10 @@
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\translate.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="include\isotropic.h">
       <SubType>
       </SubType>
     </ClInclude>
