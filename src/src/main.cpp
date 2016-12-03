@@ -76,13 +76,35 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 
 Hitable* makeScenePutAllFeaturesTogether()
 {
-	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
+	std::vector<Hitable*>* worldHitableList{ new std::vector<Hitable*>() };
 
-	material* lightMaterial = new DiffuseLight{ new ConstantTexture{vec3{7.0f, 7.0f, 7.0f}} };
-	Hitable* lightReactable = new XzRect{ 123.0f, 423.0f, 147.0f, 412.0f, 554.0f, lightMaterial };
-	(*list).push_back(lightReactable);
+	// Make rectangle light.
+	material* lightMaterial{ new DiffuseLight{ new ConstantTexture{vec3{7.0f, 7.0f, 7.0f}} } };
+	Hitable* lightReactable{ new XzRect{ 123.0f, 423.0f, 147.0f, 412.0f, 554.0f, lightMaterial } };
+	(*worldHitableList).push_back(lightReactable);
 
-	return new HitableList(list);
+	// make boxes on the floor.
+	std::vector<Hitable*>* boxList{ new std::vector<Hitable*>() };
+	material* groundMaterial{ new Lambertian{ new ConstantTexture{vec3{0.48f, 0.83f, 0.53f}} } };
+	int boxNum{ 20 };
+	for (int i = 0; i < boxNum; i++)
+	{
+		for (int j = 0; j < boxNum; j++)
+		{
+			float boxWidth{ 100.0f };
+			float x0{ -1000.0f + i*boxWidth };
+			float z0{ -1000.0f + j*boxWidth };
+			float y0{ 0.0f };
+			float x1{ x0 + boxWidth };
+			float y1{ 100.0f*(RandomUtil::getRandom0to1() + 0.01f) };
+			float z1{ z0 + boxWidth };
+			Hitable* box{ new Box{vec3{x0, y0, z0}, vec3{x1, y1, z1}, groundMaterial} };
+			(*boxList).push_back(box);
+		}
+	}
+	(*worldHitableList).push_back(new BVHNode{ &(boxList->front()), (int)boxList->size(), 0.0f, 1.0f });
+
+	return new HitableList(worldHitableList);
 }
 
 Camera getCameraPutAllFeaturesTogetherScene(int nx, int ny)
