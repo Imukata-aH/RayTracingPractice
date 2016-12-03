@@ -104,6 +104,12 @@ Hitable* makeScenePutAllFeaturesTogether()
 	}
 	(*worldHitableList).push_back(new BVHNode{ &(boxList->front()), (int)boxList->size(), 0.0f, 1.0f });
 
+	// make moving sphere(motion blur)
+	vec3 center{ 400.0f, 400.0f, 200.0f };
+	vec3 moveAmount{ 30.0f, 0.0f, 0.0f };
+	vec3 colorOrange{ 0.7f, 0.3f, 0.1f };
+	(*worldHitableList).push_back(new MovingSphere{ center, center + moveAmount, 0.0f, 1.0f, 50.0f, new Lambertian{new ConstantTexture{colorOrange}} });
+
 	return new HitableList(worldHitableList);
 }
 
@@ -320,8 +326,8 @@ int main(int argc, char** argv)
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDRにも対応できるようJXRで保存したい
 
-	int nx{ 100 };
-	int ny{ 100 };
+	int nx{ 200 };
+	int ny{ 200 };
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
