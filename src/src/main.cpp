@@ -85,6 +85,21 @@ Hitable* makeScenePutAllFeaturesTogether()
 		(*worldHitableList).push_back(lightReactable);
 	}
 
+	// make fog (large volume sphere)
+	{
+		vec3 pos{ 0.0f, 0.0f, 0.0f };
+		float radius{ 5000.0f };
+		float reflection{ 1.5f };
+		material* dielectric{ new Dielectric{reflection} };
+		Hitable* boundary{ new Sphere{pos, radius, dielectric} };
+
+		vec3 colorWhite{ 1.0f, 1.0f, 1.0f };
+		Texture* constantTex{ new ConstantTexture{colorWhite} };
+		float density{ 0.0001f };
+		Hitable* fogVolume{ new ConstantMedium{boundary, density, constantTex} };
+		(*worldHitableList).push_back(fogVolume);
+	}
+
 	// make boxes on the floor.
 	{
 		std::vector<Hitable*>* boxList{ new std::vector<Hitable*>() };
