@@ -164,6 +164,22 @@ Hitable* makeScenePutAllFeaturesTogether()
 		(*worldHitableList).push_back(translated);
 	}
 
+	// make subsurface reflection sphere (volume inside a dielectric)
+	{
+		float reflection{ 1.5f };
+		material* dielectric{ new Dielectric{ reflection } };
+		vec3 pos{ 360.0f, 180.0f, 145.0f };
+		float radius{ 70.0f };
+		Hitable* surface{ new Sphere{pos, radius, dielectric} };
+		(*worldHitableList).push_back(surface);
+
+		vec3 colorBlue{ 0.2f, 0.4f, 0.9f };
+		Texture* constantTex{ new ConstantTexture{colorBlue} };
+		float density{ 0.2f };
+		Hitable* volume{ new ConstantMedium{surface, density, constantTex} };
+		(*worldHitableList).push_back(volume);
+	}
+
 	return new HitableList(worldHitableList);
 }
 
