@@ -110,6 +110,14 @@ Hitable* makeScenePutAllFeaturesTogether()
 	vec3 colorOrange{ 0.7f, 0.3f, 0.1f };
 	(*worldHitableList).push_back(new MovingSphere{ center, center + moveAmount, 0.0f, 1.0f, 50.0f, new Lambertian{new ConstantTexture{colorOrange}} });
 
+	// make dielectric sphere
+	{
+		vec3 pos{ 260.0f, 150.0f, 45.0f };
+		material* mat{ new Dielectric{1.5f} };
+		float radius{ 50.0f };
+		(*worldHitableList).push_back(new Sphere{ pos, radius, mat });
+	}
+
 	return new HitableList(worldHitableList);
 }
 
