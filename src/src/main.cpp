@@ -105,10 +105,12 @@ Hitable* makeScenePutAllFeaturesTogether()
 	(*worldHitableList).push_back(new BVHNode{ &(boxList->front()), (int)boxList->size(), 0.0f, 1.0f });
 
 	// make moving sphere(motion blur)
-	vec3 center{ 400.0f, 400.0f, 200.0f };
-	vec3 moveAmount{ 30.0f, 0.0f, 0.0f };
-	vec3 colorOrange{ 0.7f, 0.3f, 0.1f };
-	(*worldHitableList).push_back(new MovingSphere{ center, center + moveAmount, 0.0f, 1.0f, 50.0f, new Lambertian{new ConstantTexture{colorOrange}} });
+	{
+		vec3 center{ 400.0f, 400.0f, 200.0f };
+		vec3 moveAmount{ 30.0f, 0.0f, 0.0f };
+		vec3 colorOrange{ 0.7f, 0.3f, 0.1f };
+		(*worldHitableList).push_back(new MovingSphere{ center, center + moveAmount, 0.0f, 1.0f, 50.0f, new Lambertian{new ConstantTexture{colorOrange}} });
+	}
 
 	// make dielectric sphere
 	{
@@ -126,6 +128,14 @@ Hitable* makeScenePutAllFeaturesTogether()
 		material* metal{ new Metal{gray, fuzziness} };
 		float radius{ 50.0f };
 		(*worldHitableList).push_back(new Sphere{ pos, radius, metal });
+	}
+
+	// make noise texture
+	{
+		vec3 pos{ 220.0f, 280.0f, 300.0f };
+		float radius{ 80.0f };
+		Texture* perlinTexture{ new NoiseTexture{0.1f} };
+		(*worldHitableList).push_back(new Sphere(pos, radius, new Lambertian(perlinTexture)));
 	}
 
 	return new HitableList(worldHitableList);
