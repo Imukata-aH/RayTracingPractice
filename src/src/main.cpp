@@ -113,9 +113,19 @@ Hitable* makeScenePutAllFeaturesTogether()
 	// make dielectric sphere
 	{
 		vec3 pos{ 260.0f, 150.0f, 45.0f };
-		material* mat{ new Dielectric{1.5f} };
+		material* dielectric{ new Dielectric{1.5f} };
 		float radius{ 50.0f };
-		(*worldHitableList).push_back(new Sphere{ pos, radius, mat });
+		(*worldHitableList).push_back(new Sphere{ pos, radius, dielectric });
+	}
+
+	// make metal sphere
+	{
+		vec3 pos{ 0.0f, 150.0f, 145.0f };
+		vec3 gray{ 0.8f, 0.8f, 0.9f };
+		float fuzziness{ 10.0f };
+		material* metal{ new Metal{gray, fuzziness} };
+		float radius{ 50.0f };
+		(*worldHitableList).push_back(new Sphere{ pos, radius, metal });
 	}
 
 	return new HitableList(worldHitableList);
