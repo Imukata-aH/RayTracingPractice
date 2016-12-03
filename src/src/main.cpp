@@ -195,6 +195,18 @@ Hitable* makeScenePutAllFeaturesTogether()
 		(*worldHitableList).push_back(volume);
 	}
 
+	// make image texture
+	{
+		int nx, ny, nn;
+		unsigned char* texData = stbi_load("./texture_images/earth.png", &nx, &ny, &nn, 0);
+		material* imageTexMat{ new Lambertian{new ImageTexture{texData, nx, ny}} };
+
+		vec3 pos{ 400.0f, 220.0f, 400.0f };
+		float radius{ 100.0f };
+		Hitable* imageSphere{ new Sphere{pos, radius, imageTexMat} };
+		(*worldHitableList).push_back(imageSphere);
+	}
+
 	return new HitableList(worldHitableList);
 }
 
