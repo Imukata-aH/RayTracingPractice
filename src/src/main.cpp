@@ -74,6 +74,28 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 	}
 }
 
+Hitable* makeScenePutAllFeaturesTogether()
+{
+	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
+
+	material* lightMaterial = new DiffuseLight{ new ConstantTexture{vec3{7.0f, 7.0f, 7.0f}} };
+	Hitable* lightReactable = new XzRect{ 123.0f, 423.0f, 147.0f, 412.0f, 554.0f, lightMaterial };
+	(*list).push_back(lightReactable);
+
+	return new HitableList(list);
+}
+
+Camera getCameraPutAllFeaturesTogetherScene(int nx, int ny)
+{
+	vec3 lookFrom{ 478.0f, 278.0f, -600.0f };
+	vec3 lookAt{ 278.0f, 278.0f, 0.0f };
+	float distToFocus{ 10.0f };
+	float aperture{ 0.0f };
+	float vfov{ 40.0f };
+	Camera camera{ lookFrom, lookAt, vec3{ 0.0f, 1.0f, 0.0f }, vfov, float(nx) / float(ny), aperture, distToFocus, 0.0f, 1.0f };
+	return camera;
+}
+
 Hitable* makeSceneSmokeyCornell()
 {
 	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
@@ -276,8 +298,8 @@ int main(int argc, char** argv)
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDRにも対応できるようJXRで保存したい
 
-	int nx{ 600 };
-	int ny{ 600 };
+	int nx{ 100 };
+	int ny{ 100 };
 	int ns{ 100 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -296,9 +318,12 @@ int main(int argc, char** argv)
 	/*camera = getCameraForSimpleLightScene(nx, ny);
 	world = makeSceneSimpleLight();*/
 
-	camera = getCameraCornellBoxScene(nx, ny);
+	//camera = getCameraCornellBoxScene(nx, ny);
 	//world = makeSceneCornellBox();
-	world = makeSceneSmokeyCornell();
+	//world = makeSceneSmokeyCornell();
+
+	camera = getCameraPutAllFeaturesTogetherScene(nx, ny);
+	world = makeScenePutAllFeaturesTogether();
 
 	const float inv_gamma{ 1 / gamma };
 	for (int j = ny - 1; j >= 0; j--)
