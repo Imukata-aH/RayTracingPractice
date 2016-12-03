@@ -79,30 +79,34 @@ Hitable* makeScenePutAllFeaturesTogether()
 	std::vector<Hitable*>* worldHitableList{ new std::vector<Hitable*>() };
 
 	// Make rectangle light.
-	material* lightMaterial{ new DiffuseLight{ new ConstantTexture{vec3{7.0f, 7.0f, 7.0f}} } };
-	Hitable* lightReactable{ new XzRect{ 123.0f, 423.0f, 147.0f, 412.0f, 554.0f, lightMaterial } };
-	(*worldHitableList).push_back(lightReactable);
+	{
+		material* lightMaterial{ new DiffuseLight{ new ConstantTexture{vec3{7.0f, 7.0f, 7.0f}} } };
+		Hitable* lightReactable{ new XzRect{ 123.0f, 423.0f, 147.0f, 412.0f, 554.0f, lightMaterial } };
+		(*worldHitableList).push_back(lightReactable);
+	}
 
 	// make boxes on the floor.
-	std::vector<Hitable*>* boxList{ new std::vector<Hitable*>() };
-	material* groundMaterial{ new Lambertian{ new ConstantTexture{vec3{0.48f, 0.83f, 0.53f}} } };
-	int boxNum{ 20 };
-	for (int i = 0; i < boxNum; i++)
 	{
-		for (int j = 0; j < boxNum; j++)
+		std::vector<Hitable*>* boxList{ new std::vector<Hitable*>() };
+		material* groundMaterial{ new Lambertian{ new ConstantTexture{vec3{0.48f, 0.83f, 0.53f}} } };
+		int boxNum{ 20 };
+		for (int i = 0; i < boxNum; i++)
 		{
-			float boxWidth{ 100.0f };
-			float x0{ -1000.0f + i*boxWidth };
-			float z0{ -1000.0f + j*boxWidth };
-			float y0{ 0.0f };
-			float x1{ x0 + boxWidth };
-			float y1{ 100.0f*(RandomUtil::getRandom0to1() + 0.01f) };
-			float z1{ z0 + boxWidth };
-			Hitable* box{ new Box{vec3{x0, y0, z0}, vec3{x1, y1, z1}, groundMaterial} };
-			(*boxList).push_back(box);
+			for (int j = 0; j < boxNum; j++)
+			{
+				float boxWidth{ 100.0f };
+				float x0{ -1000.0f + i*boxWidth };
+				float z0{ -1000.0f + j*boxWidth };
+				float y0{ 0.0f };
+				float x1{ x0 + boxWidth };
+				float y1{ 100.0f*(RandomUtil::getRandom0to1() + 0.01f) };
+				float z1{ z0 + boxWidth };
+				Hitable* box{ new Box{vec3{x0, y0, z0}, vec3{x1, y1, z1}, groundMaterial} };
+				(*boxList).push_back(box);
+			}
 		}
+		(*worldHitableList).push_back(new BVHNode{ &(boxList->front()), (int)boxList->size(), 0.0f, 1.0f });
 	}
-	(*worldHitableList).push_back(new BVHNode{ &(boxList->front()), (int)boxList->size(), 0.0f, 1.0f });
 
 	// make moving sphere(motion blur)
 	{
@@ -136,6 +140,28 @@ Hitable* makeScenePutAllFeaturesTogether()
 		float radius{ 80.0f };
 		Texture* perlinTexture{ new NoiseTexture{0.1f} };
 		(*worldHitableList).push_back(new Sphere(pos, radius, new Lambertian(perlinTexture)));
+	}
+
+	// make spheres in box (rotate and translate)
+	{
+		int sphereNum{ 1000 };
+		std::vector<Hitable*>* sphereList{ new std::vector<Hitable*>() };
+		float radius{ 10.0f };
+		vec3 center{ 165.0f, 165.0f, 165.0f };
+		vec3 colorWhite{ 0.73f, 0.73f, 0.73f };
+		material* white{ new Lambertian{new ConstantTexture{colorWhite}} };
+		for (int i = 0; i < sphereNum; i++)
+		{
+			vec3 pos{ center.x() * RandomUtil::getRandom0to1(), center.y() * RandomUtil::getRandom0to1(), center.z() * RandomUtil::getRandom0to1() };
+			(*sphereList).push_back(new Sphere{ pos, radius, white });
+		}
+
+		float rotationAngle{ 15.0f };
+		vec3 translateAmout{ -100.0f, 270.0f, 395.0f };
+		Hitable* nodes{ new BVHNode{&(sphereList->front()), (int)sphereList->size(), 0.0f, 1.0f} };
+		Hitable* rotatedY{ new RotateY{nodes, rotationAngle} };
+		Hitable* translated{ new Translate{rotatedY, translateAmout} };
+		(*worldHitableList).push_back(translated);
 	}
 
 	return new HitableList(worldHitableList);
