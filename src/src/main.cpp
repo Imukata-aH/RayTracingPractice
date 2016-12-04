@@ -74,6 +74,153 @@ Hitable* makeRandomObject(float chooseMat, float chooseObj, vec3 center, float r
 	}
 }
 
+Hitable* makeScenePutAllFeaturesTogether()
+{
+	std::vector<Hitable*>* worldHitableList{ new std::vector<Hitable*>() };
+
+	// Make rectangle light.
+	{
+		material* lightMaterial{ new DiffuseLight{ new ConstantTexture{vec3{7.0f, 7.0f, 7.0f}} } };
+		Hitable* lightReactable{ new XzRect{ 123.0f, 423.0f, 147.0f, 412.0f, 554.0f, lightMaterial } };
+		(*worldHitableList).push_back(lightReactable);
+	}
+
+	// make fog (large volume sphere)
+	{
+		vec3 pos{ 0.0f, 0.0f, 0.0f };
+		float radius{ 5000.0f };
+		float reflection{ 1.5f };
+		material* dielectric{ new Dielectric{reflection} };
+		Hitable* boundary{ new Sphere{pos, radius, dielectric} };
+
+		vec3 colorWhite{ 1.0f, 1.0f, 1.0f };
+		Texture* constantTex{ new ConstantTexture{colorWhite} };
+		float density{ 0.0001f };
+		Hitable* fogVolume{ new ConstantMedium{boundary, density, constantTex} };
+		(*worldHitableList).push_back(fogVolume);
+	}
+
+	// make boxes on the floor.
+	{
+		std::vector<Hitable*>* boxList{ new std::vector<Hitable*>() };
+		material* groundMaterial{ new Lambertian{ new ConstantTexture{vec3{0.48f, 0.83f, 0.53f}} } };
+		int boxNum{ 20 };
+		for (int i = 0; i < boxNum; i++)
+		{
+			for (int j = 0; j < boxNum; j++)
+			{
+				float boxWidth{ 100.0f };
+				float x0{ -1000.0f + i*boxWidth };
+				float z0{ -1000.0f + j*boxWidth };
+				float y0{ 0.0f };
+				float x1{ x0 + boxWidth };
+				float y1{ 100.0f*(RandomUtil::getRandom0to1() + 0.01f) };
+				float z1{ z0 + boxWidth };
+				Hitable* box{ new Box{vec3{x0, y0, z0}, vec3{x1, y1, z1}, groundMaterial} };
+				(*boxList).push_back(box);
+			}
+		}
+		(*worldHitableList).push_back(new BVHNode{ &(boxList->front()), (int)boxList->size(), 0.0f, 1.0f });
+	}
+
+	// make moving sphere(motion blur)
+	{
+		vec3 center{ 400.0f, 400.0f, 200.0f };
+		vec3 moveAmount{ 30.0f, 0.0f, 0.0f };
+		vec3 colorOrange{ 0.7f, 0.3f, 0.1f };
+		(*worldHitableList).push_back(new MovingSphere{ center, center + moveAmount, 0.0f, 1.0f, 50.0f, new Lambertian{new ConstantTexture{colorOrange}} });
+	}
+
+	// make dielectric sphere
+	{
+		vec3 pos{ 260.0f, 150.0f, 45.0f };
+		material* dielectric{ new Dielectric{1.5f} };
+		float radius{ 50.0f };
+		(*worldHitableList).push_back(new Sphere{ pos, radius, dielectric });
+	}
+
+	// make metal sphere
+	{
+		vec3 pos{ 0.0f, 150.0f, 145.0f };
+		vec3 gray{ 0.8f, 0.8f, 0.9f };
+		float fuzziness{ 10.0f };
+		material* metal{ new Metal{gray, fuzziness} };
+		float radius{ 50.0f };
+		(*worldHitableList).push_back(new Sphere{ pos, radius, metal });
+	}
+
+	// make noise texture
+	{
+		vec3 pos{ 220.0f, 280.0f, 300.0f };
+		float radius{ 80.0f };
+		Texture* perlinTexture{ new NoiseTexture{1.0f} };
+		(*worldHitableList).push_back(new Sphere(pos, radius, new Lambertian(perlinTexture)));
+	}
+
+	// make spheres in box (rotate and translate)
+	{
+		int sphereNum{ 1000 };
+		std::vector<Hitable*>* sphereList{ new std::vector<Hitable*>() };
+		float radius{ 10.0f };
+		vec3 center{ 165.0f, 165.0f, 165.0f };
+		vec3 colorWhite{ 0.73f, 0.73f, 0.73f };
+		material* white{ new Lambertian{new ConstantTexture{colorWhite}} };
+		for (int i = 0; i < sphereNum; i++)
+		{
+			vec3 pos{ center.x() * RandomUtil::getRandom0to1(), center.y() * RandomUtil::getRandom0to1(), center.z() * RandomUtil::getRandom0to1() };
+			(*sphereList).push_back(new Sphere{ pos, radius, white });
+		}
+
+		float rotationAngle{ 15.0f };
+		vec3 translateAmout{ -100.0f, 270.0f, 395.0f };
+		Hitable* nodes{ new BVHNode{&(sphereList->front()), (int)sphereList->size(), 0.0f, 1.0f} };
+		Hitable* rotatedY{ new RotateY{nodes, rotationAngle} };
+		Hitable* translated{ new Translate{rotatedY, translateAmout} };
+		(*worldHitableList).push_back(translated);
+	}
+
+	// make subsurface reflection sphere (volume inside a dielectric)
+	{
+		float reflection{ 1.5f };
+		material* dielectric{ new Dielectric{ reflection } };
+		vec3 pos{ 360.0f, 180.0f, 145.0f };
+		float radius{ 70.0f };
+		Hitable* surface{ new Sphere{pos, radius, dielectric} };
+		(*worldHitableList).push_back(surface);
+
+		vec3 colorBlue{ 0.2f, 0.4f, 0.9f };
+		Texture* constantTex{ new ConstantTexture{colorBlue} };
+		float density{ 0.2f };
+		Hitable* volume{ new ConstantMedium{surface, density, constantTex} };
+		(*worldHitableList).push_back(volume);
+	}
+
+	// make image texture
+	{
+		int nx, ny, nn;
+		unsigned char* texData = stbi_load("./texture_images/earth.png", &nx, &ny, &nn, 0);
+		material* imageTexMat{ new Lambertian{new ImageTexture{texData, nx, ny}} };
+
+		vec3 pos{ 400.0f, 220.0f, 400.0f };
+		float radius{ 100.0f };
+		Hitable* imageSphere{ new Sphere{pos, radius, imageTexMat} };
+		(*worldHitableList).push_back(imageSphere);
+	}
+
+	return new HitableList(worldHitableList);
+}
+
+Camera getCameraPutAllFeaturesTogetherScene(int nx, int ny)
+{
+	vec3 lookFrom{ 478.0f, 278.0f, -600.0f };
+	vec3 lookAt{ 278.0f, 278.0f, 0.0f };
+	float distToFocus{ 10.0f };
+	float aperture{ 0.0f };
+	float vfov{ 40.0f };
+	Camera camera{ lookFrom, lookAt, vec3{ 0.0f, 1.0f, 0.0f }, vfov, float(nx) / float(ny), aperture, distToFocus, 0.0f, 1.0f };
+	return camera;
+}
+
 Hitable* makeSceneSmokeyCornell()
 {
 	std::vector<Hitable*>* list{ new std::vector<Hitable*>() };
@@ -276,9 +423,9 @@ int main(int argc, char** argv)
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDRにも対応できるようJXRで保存したい
 
-	int nx{ 600 };
-	int ny{ 600 };
-	int ns{ 100 };
+	int nx{ 800 };
+	int ny{ 800 };
+	int ns{ 10000 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
 	Camera camera;
@@ -296,9 +443,12 @@ int main(int argc, char** argv)
 	/*camera = getCameraForSimpleLightScene(nx, ny);
 	world = makeSceneSimpleLight();*/
 
-	camera = getCameraCornellBoxScene(nx, ny);
+	//camera = getCameraCornellBoxScene(nx, ny);
 	//world = makeSceneCornellBox();
-	world = makeSceneSmokeyCornell();
+	//world = makeSceneSmokeyCornell();
+
+	camera = getCameraPutAllFeaturesTogetherScene(nx, ny);
+	world = makeScenePutAllFeaturesTogether();
 
 	const float inv_gamma{ 1 / gamma };
 	for (int j = ny - 1; j >= 0; j--)
