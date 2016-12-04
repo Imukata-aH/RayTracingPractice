@@ -153,7 +153,7 @@ Hitable* makeScenePutAllFeaturesTogether()
 	{
 		vec3 pos{ 220.0f, 280.0f, 300.0f };
 		float radius{ 80.0f };
-		Texture* perlinTexture{ new NoiseTexture{0.1f} };
+		Texture* perlinTexture{ new NoiseTexture{1.0f} };
 		(*worldHitableList).push_back(new Sphere(pos, radius, new Lambertian(perlinTexture)));
 	}
 
@@ -423,9 +423,9 @@ int main(int argc, char** argv)
 	std::ofstream outputFile;
 	outputFile.open(fileName, std::ios::out);	// TODO: HDRにも対応できるようJXRで保存したい
 
-	int nx{ 200 };
-	int ny{ 200 };
-	int ns{ 100 };
+	int nx{ 800 };
+	int ny{ 800 };
+	int ns{ 10000 };
 	outputFile << "P3\n" << nx << " " << ny << "\n255\n";
 
 	Camera camera;
